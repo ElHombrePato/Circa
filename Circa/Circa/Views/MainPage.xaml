@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:Circa"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfCalendar.XForms;assembly=Syncfusion.SfCalendar.XForms"
+             xmlns:viewModels="clr-namespace:Circa.ViewModels"
+             x:Class="Circa.Views.MainPage"
+             Title="Circa">
+
+    
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <NavigationPage.TitleView>
+        <Grid Style="{StaticResource TitleViewGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Style="{StaticResource NavigationBarTitleLabel}"
+                   Text="Circa"
+                   Grid.Column="0"/>
+
+            <ImageButton Style="{StaticResource NavigationBarImageButton}"
+                         Source="{local:ImageResource Circa.Images.077-more.png}"
+                         Clicked="NewEventCreation_Clicked"    
+                         Grid.Column="1"/>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <!--
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{local:ImageResource Circa.Images.077-more.png}"  
+                     Order="Primary"
+                     Priority="1"
+                     Clicked="NewEventCreation_Clicked"/>
+    </ContentPage.ToolbarItems>
+-->
+    
+    <Grid Margin="10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Frame Style="{StaticResource CalendarFrame}" Grid.Row="0">
+            <syncfusion:SfCalendar x:Name="Calendar"
+                SelectionMode="SingleSelection">   
+            </syncfusion:SfCalendar>
+        </Frame>
+
+        <StackLayout Grid.Row="1">
+            <Frame Style="{StaticResource FrameStyle}">
+                <!--
+                        <ListView x:Name="votedDatesListView"
+                                  IsPullToRefreshEnabled="true"
+                                  RefreshControlColor="Red" >
+                            <ListView.Header>
+                                <StackLayout>
+                                    <Label Text="Fechas seleccionadas:" Style="{StaticResource SectionLabel}"/>
+                                </StackLayout>
+                            </ListView.Header>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.ContextActions>
+                                            <MenuItem Clicked="OnMore"
+                                                CommandParameter="{Binding .}"
+                                                Text="More" />
+                                            <MenuItem Clicked="OnDelete"
+                                                  CommandParameter="{Binding .}"
+                                                  Text="Delete" IsDestructive="True" />
+                                            
+                                        </ViewCell.ContextActions>
+                                        
+                                        
+                                        <Grid VerticalOptions="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="{Binding Date, StringFormat='Date: {0:dd/M/yyyy}'}"
+                                           Grid.Column="0"/>
+                                            <Label Text="{Binding Proposer}"
+                                           Grid.Column="1"/>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        -->
+                <!--
+                        <ListView ItemsSource="{Binding DateOptions}"  
+                                  SelectedItem="Single">
+                            <ListView.Header>
+                                <StackLayout>
+                                    <Label Text="Fechas seleccionadas:" Style="{StaticResource SectionLabel}"/>
+                                </StackLayout>
+                            </ListView.Header>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.ContextActions>
+                                        </ViewCell.ContextActions>
+
+                                        <Grid VerticalOptions="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="{Binding Date, StringFormat='Date: {0:dd/M/yyyy}'}"
+                                           Grid.Column="0"/>
+                                            <Label Text="{Binding Proposer.Nickname}"
+                                           Grid.Column="1"/>
+                                            <ImageButton
+                                                 Source="{local:ImageResource Circa.Images.122-cancel.png}"
+                                                 Clicked="RemoveDateOption_Clicked"
+                                                 Grid.Column="2" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+                        -->
+
+                <!--
+                        <ListView   x:Name="myEventList"
+                                    ItemsSource="{Binding MyEvents, Mode=TwoWay}"
+                                    ItemSelected="OnListViewItemSelected"
+                                    ItemTapped="OnListViewItemTapped"
+                                    SelectedItem="Single">
+                    -->
+
+                <CollectionView x:Name="myEventList"
+                                ItemsSource="{Binding MyEvents}"
+                                SelectedItem="{Binding SelectedDateEvent}"             
+                                SelectionChanged="myEventList_SelectionChanged"
+                                SelectionMode="Single">
+                    <CollectionView.Header>
+                        <StackLayout>
+                            <Label Text="Tus eventos:"
+                            Style="{StaticResource SectionLabel}"/>
+                        </StackLayout>
+                    </CollectionView.Header>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <ContentView>
+                                <Grid VerticalOptions="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="{Binding Title}"       
+                                        Grid.Row="0" Grid.Column="0"/>
+                                    <Label Text="{Binding VotingDeadline}"
+                                        Grid.Row="1" Grid.Column="0"/>
+                                    <Label Text="{Binding Field}"
+                                        Grid.Row="1" Grid.Column="1"/>
+                                </Grid>
+                            </ContentView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </Frame>
+        </StackLayout>
+        
+    <!--
+        <ListView   x:Name="myEventList"
+                                
+                                HasUnevenRows="False"
+                                SelectedItem="Single"
+                                ItemTapped="OnListViewItemTapped">
+                    <ListView.Header>
+                        <StackLayout>
+                            <Label Text="Tus eventos:"
+                                           Style="{StaticResource SectionLabel}"/>
+                        </StackLayout>
+                    </ListView.Header>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                </ViewCell.ContextActions>
+                                <Grid VerticalOptions="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+
+                                            </Grid.ColumnDefinitions>
+
+            <Label Text="{Binding Title}"
+                                                       
+                                                           Grid.Row="0" Grid.Column="0"/>
+
+            <Label Text="{Binding VotingDeadline}"
+                                                           Grid.Row="1" Grid.Column="0"/>
+            <Label Text="{Binding AdminNickname}"
+                                                           Grid.Row="1" Grid.Column="1"/>
+        </Grid>
+
+        </ViewCell>
+        </DataTemplate>
+        </ListView.ItemTemplate>
+        </ListView>
+    --> 
+        
+        <!--      
+        <ImageButton Grid.Row="1"
+            Source="{local:ImageResource Circa.Images.077-more.png}"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            WidthRequest="72"
+            HeightRequest="72"
+            Margin="0,0,25,25" 
+            BackgroundColor="Transparent"
+            Clicked="NewEventCreation_Clicked"/>
+        -->
+        
+    </Grid>
+</ContentPage>

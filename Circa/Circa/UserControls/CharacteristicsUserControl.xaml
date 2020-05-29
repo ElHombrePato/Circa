@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Circa"
+             mc:Ignorable="d"
+             x:Class="Circa.UserControls.CharacteristicsUserControl">
+  
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Margin="10, 10">
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry x:Name="TitleEntry"
+                           Placeholder="Título"/>
+                </Frame>
+
+                <Frame Style="{StaticResource FrameStyle}">
+                    <StackLayout>
+                        <Label Text="Información" Style="{StaticResource SectionLabel}"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{local:ImageResource Circa.Images.112-information.png}" Grid.Row="0" Grid.Column="0"/>
+                            <Entry x:Name="DescriptionEntry" Placeholder="Descripción" Grid.Row="0" Grid.Column="1"/>
+
+                            <Image Source="{local:ImageResource Circa.Images.138-maps-and-flags-1.png}" Grid.Row="1" Grid.Column="0"/>
+                            <Entry x:Name="UbicationEntry" Placeholder="Ubicación" Grid.Row="1" Grid.Column="1"/>
+
+                            <Image Source="{local:ImageResource Circa.Images.089-steering.png}" Grid.Row="2" Grid.Column="0"/>
+                            <Picker x:Name="FieldPicker" Title="Ámbito" Grid.Row="2" Grid.Column="1" />
+                        </Grid>
+
+                        <Label Text="Límite de tiempo para votar:"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
+                            <DatePicker x:Name="VotingDeadlineDatePicker" Grid.Column="1"/>
+                            <TimePicker x:Name="VotingDeadlineTimePicker" Grid.Column="2"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource FrameStyle}">
+                    <StackLayout>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="Usuarios pueden proponer"
+                                   Style="{StaticResource SectionLabel}"
+                                   Grid.Column="0"/>
+                            <Switch x:Name="ProposingIsEnabledSwitch"
+                                    
+                                    Grid.Column="1"/>
+                        </Grid>
+
+                        <StackLayout x:Name="ProposingUsersBlock" IsVisible="False">
+                            <Grid x:Name="MaxPropositionsPerUserGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{local:ImageResource Circa.Images.196-user.png}"
+                                    Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="Límite de aportaciones"
+                                       Grid.Row="0" Grid.Column="1"/>
+                                <Picker x:Name="MaxPropositionsPerUserPicker"
+                                        Title="  3"
+                                        Grid.Row="0" Grid.Column="2"/>
+                            </Grid>
+
+                            <Label x:Name="ProposingDeadlineLabel"
+                                Text="Límite de tiempo para proponer:"/>
+
+                            <Grid x:Name="ProposingDeadlineGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
+                                <DatePicker x:Name="ProposingDeadlineDatePicker" Grid.Column="1"/>
+                                <TimePicker x:Name="ProposingDeadlineTimePicker" Grid.Column="2"/>
+                            </Grid>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

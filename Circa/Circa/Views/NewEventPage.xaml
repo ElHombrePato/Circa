@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage     xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                mc:Ignorable="d"
+                xmlns:local="clr-namespace:Circa"
+                xmlns:syncfusion="clr-namespace:Syncfusion.SfCalendar.XForms;assembly=Syncfusion.SfCalendar.XForms"
+                xmlns:viewModels="clr-namespace:Circa.ViewModels"
+                x:Class="Circa.Views.NewEventPage">
+    
+    <!--
+    <TabbedPage.BindingContext>
+        <viewModels:EventViewModel/>
+    </TabbedPage.BindingContext>
+    -->
+
+    <NavigationPage.TitleView>
+        <Grid Style="{StaticResource TitleViewGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ImageButton Style="{StaticResource NavigationBarImageButton}"
+                         Source="{local:ImageResource Circa.Images.172-left-arrow.png}"
+                         Clicked="CancelNewEvent_Clicked"
+                         Grid.Column="0" />
+            <Label Style="{StaticResource NavigationBarTitleLabel}" 
+                   Text="Nuevo Evento"
+                   Grid.Column="1"/>
+            <ImageButton Style="{StaticResource NavigationBarImageButton}"
+                         Source="{local:ImageResource Circa.Images.022-tick-1.png}"
+                         Clicked="ConfirmNewEvent_Clicked"    
+                         Grid.Column="2"/>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <!--
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{local:ImageResource Circa.Images.022-tick-1.png}"  
+            Order="Primary"
+            Priority="1"
+            Clicked="ConfirmNewEvent_Clicked"/>
+
+        <ToolbarItem/>
+
+        <ToolbarItem IconImageSource="{local:ImageResource Circa.Images.122-cancel.png}"  
+            Order="Primary"
+            Priority="0"
+            Clicked="CancelNewEvent_Clicked"/>
+    </TabbedPage.ToolbarItems>
+-->
+
+    <ContentPage Title="Características">
+        <ScrollView>
+            <StackLayout Margin="10, 10">
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry x:Name="TitleEntry"
+                           Placeholder="Título"/>
+                </Frame>
+
+                <Frame Style="{StaticResource FrameStyle}">
+                    <StackLayout>
+                        <Label Text="Información" Style="{StaticResource SectionLabel}"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{local:ImageResource Circa.Images.112-information.png}" Grid.Row="0" Grid.Column="0"/>
+                            <Entry x:Name="DescriptionEntry" Placeholder="Descripción" Grid.Row="0" Grid.Column="1"/>
+
+                            <Image Source="{local:ImageResource Circa.Images.138-maps-and-flags-1.png}" Grid.Row="1" Grid.Column="0"/>
+                            <Entry x:Name="UbicationEntry" Placeholder="Ubicación" Grid.Row="1" Grid.Column="1"/>
+
+                            <Image Source="{local:ImageResource Circa.Images.089-steering.png}" Grid.Row="2" Grid.Column="0"/>
+                            <Picker x:Name="FieldPicker" Title="Ámbito" Grid.Row="2" Grid.Column="1" />
+                        </Grid>
+
+                        <Label Text="Límite de tiempo para votar:"/>
+                        
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
+                            <DatePicker x:Name="VotingDeadlineDatePicker" Grid.Column="1"/>
+                            <TimePicker x:Name="VotingDeadlineTimePicker" Grid.Column="2"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource FrameStyle}">
+                    <StackLayout>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="Usuarios pueden proponer"
+                                   Style="{StaticResource SectionLabel}"
+                                   Grid.Column="0"/>
+                            <Switch x:Name="ProposingIsEnabledSwitch"
+                                    Toggled="ProposingIsEnabledSwitch_Toggled"
+                                    Grid.Column="1"/>
+                        </Grid>
+                        
+                        <StackLayout x:Name="ProposingUsersBlock" IsVisible="False">
+                            <Grid x:Name="MaxPropositionsPerUserGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{local:ImageResource Circa.Images.196-user.png}"
+                                    Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="Límite de aportaciones"
+                                       Grid.Row="0" Grid.Column="1"/>
+                                <Picker x:Name="MaxPropositionsPerUserPicker"
+                                        Title="  3"
+                                        Grid.Row="0" Grid.Column="2"/>
+                            </Grid>
+
+                            <Label x:Name="ProposingDeadlineLabel"
+                                Text="Límite de tiempo para proponer:"/>
+
+                            <Grid x:Name="ProposingDeadlineGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
+                                <DatePicker x:Name="ProposingDeadlineDatePicker" Grid.Column="1"/>
+                                <TimePicker x:Name="ProposingDeadlineTimePicker" Grid.Column="2"/>
+                            </Grid>
+                        </StackLayout>
+
+                        <!--
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="Usuarios pueden proponer"
+                                   Style="{StaticResource SectionLabel}"
+                                   Grid.Column="0"/>
+                                <Switch x:Name="ProposingIsEnabledSwitch"
+                                    Toggled="ProposingIsEnabledSwitch_Toggled"
+                                    Grid.Column="1"/>
+                            </Grid>
+
+                            <Grid x:Name="MaxPropositionsPerUserGrid" Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{local:ImageResource Circa.Images.196-user.png}"
+                                    Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="Límite de aportaciones"
+                                       Grid.Row="0" Grid.Column="1"/>
+                                <Picker x:Name="MaxPropositionsPerUserPicker"
+                                        Title="  3"
+                                        Grid.Row="0" Grid.Column="2"/>
+                            </Grid>
+
+                            <Label x:Name="ProposingDeadlineLabel" Text="Límite de tiempo para proponer:" Grid.Row="2" Grid.Column="0"/>
+
+                            <Grid x:Name="ProposingDeadlineGrid" Grid.Row="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
+                                <DatePicker x:Name="ProposingDeadlineDatePicker" Grid.Column="1"/>
+                                <TimePicker x:Name="ProposingDeadlineTimePicker" Grid.Column="2"/>
+                            </Grid>
+                            
+                            
+                        </Grid>
+                        -->
+                    </StackLayout>
+                </Frame>
+                
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+    <ContentPage Title="Fechas">
+        <Grid Margin="10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Frame Style="{StaticResource CalendarFrame}">
+
+                <syncfusion:SfCalendar x:Name="Calendar"                                     
+                                       SelectionMode="MultiSelection"   
+                                       SelectedDates="{Binding MyDates, Mode=TwoWay}">
+                </syncfusion:SfCalendar>
+                <!--Las fechas deben ser posteriores a la fecha de voto límite
+                Calendar-->
+
+                <!--
+                <syncfusion:SfCalendar x:Name="Calendar"
+                    FirstDayofWeek="1"
+                    MinDate=""
+                    MaxDate=""
+                    OnCalendarTapped="Calendar_OnCalendarTapped"
+                    SelectionChanged="Handle_SelectionChanged"
+                    SelectionMode="MultiSelection"
+                    SelectedDates="{Binding DateOptions, Mode=TwoWay}"
+                    DataSource="{Binding DateOptions.Date}"
+                    Grid.Row="0"/>
+                -->
+            </Frame>
+            
+            <StackLayout Grid.Row="1">
+                <Frame Style="{StaticResource FrameStyle}">
+                    <!--
+                    <ListView x:Name="votedDatesListView"
+                                IsPullToRefreshEnabled="true"
+                                RefreshControlColor="Red" >
+                        <ListView.Header>
+                            <StackLayout>
+                                <Label Text="Fechas seleccionadas:" Style="{StaticResource SectionLabel}"/>
+                            </StackLayout>
+                        </ListView.Header>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                        <MenuItem Clicked="OnMore"
+                                            CommandParameter="{Binding .}"
+                                            Text="More" />
+                                        <MenuItem Clicked="OnDelete"
+                                                CommandParameter="{Binding .}"
+                                                Text="Delete" IsDestructive="True" />
+                                            
+                                    </ViewCell.ContextActions>
+                                        
+                                        
+                                    <Grid VerticalOptions="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="{Binding Date, StringFormat='Date: {0:dd/M/yyyy}'}"
+                                        Grid.Column="0"/>
+                                        <Label Text="{Binding Proposer}"
+                                        Grid.Column="1"/>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    -->
+                    <!--
+                    <ListView ItemsSource="{Binding DateOptions}"  
+                                SelectedItem="Single">
+                        <ListView.Header>
+                            <StackLayout>
+                                <Label Text="Fechas seleccionadas:" Style="{StaticResource SectionLabel}"/>
+                            </StackLayout>
+                        </ListView.Header>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                    </ViewCell.ContextActions>
+
+                                    <Grid VerticalOptions="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="{Binding Date, StringFormat='Date: {0:dd/M/yyyy}'}"
+                                        Grid.Column="0"/>
+                                        <Label Text="{Binding Proposer.Nickname}"
+                                        Grid.Column="1"/>
+                                        <ImageButton
+                                                Source="{local:ImageResource Circa.Images.122-cancel.png}"
+                                                Clicked="RemoveDateOption_Clicked"
+                                                Grid.Column="2" />
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+                    -->
+
+                    <ListView x:Name="myDateList"
+                                ItemsSource="{Binding MyDates, Mode=OneWay}"
+                                SelectionMode="None">
+                        <ListView.Header>
+                            <StackLayout>
+                                <Label Text="Tus fechas seleccionadas:"
+                                        Style="{StaticResource SectionLabel}"/>
+                            </StackLayout>
+                        </ListView.Header>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                    </ViewCell.ContextActions>
+
+                                    <Grid VerticalOptions="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label 
+                                                Text="{Binding Path=., StringFormat='Fecha: {0:dd/M/yyyy}'}"
+                                                Grid.Column="0"/>
+                                        <!--
+                                        <ImageButton
+                                                Source="{local:ImageResource Circa.Images.122-cancel.png}"
+                                                Clicked="RemoveDate_Clicked"
+                                                Grid.Column="1" />
+                                        -->
+
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </Frame>
+            </StackLayout>
+
+            
+            
+        </Grid>
+    </ContentPage>
+</TabbedPage>
