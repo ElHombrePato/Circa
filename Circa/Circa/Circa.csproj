@@ -20,6 +20,7 @@
   <ItemGroup>
     <Compile Remove="Models\Class1.cs" />
     <Compile Remove="Models\EventList.cs" />
+    <Compile Remove="ViewModels\Class1.cs" />
     <Compile Remove="Views\MasterDetailPage1.xaml.cs" />
     <Compile Remove="Views\MasterDetailPage1Detail.xaml.cs" />
     <Compile Remove="Views\MasterDetailPage1Master.xaml.cs" />
@@ -82,8 +83,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\NewEventPage.xaml.cs">
-      <DependentUpon>NewEventPage.xaml</DependentUpon>
+    <Compile Update="Views\ProposingDateEventPage.xaml.cs">
+      <DependentUpon>ProposingDateEventPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\VotingDateEventPage.xaml.cs">
+      <DependentUpon>VotingDateEventPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -97,10 +101,10 @@
     <EmbeddedResource Update="Views\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\NewEventPage.xaml">
+    <EmbeddedResource Update="Views\ProposingDateEventPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\VotingEventPage.xaml">
+    <EmbeddedResource Update="Views\VotingDateEventPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

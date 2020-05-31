@@ -8,21 +8,25 @@ using Xamarin.Forms;
 namespace Circa.ViewModels
 {
     //Código sacado de https://www.syncfusion.com/kb/10087/how-to-bind-selecteddates-of-calendar-in-mvvm
-    public class VotingEventViewModel : INotifyPropertyChanged
+    public abstract class DateEventVM : GenericEventVM, INotifyPropertyChanged
     {
         private DateEvent dateEvent;
 
         private ObservableCollection<DateOption> dateOptions;
-        
-        public VotingEventViewModel() //Nuevo evento
+
+        //Used if it is a new Date event
+        public DateEventVM() : base()
         {
-            DateEvent = new DateEvent(App.myUser);
+            DateEvent = GenericEvent as DateEvent;
+            DateOptions = new ObservableCollection<DateOption>();
         }
 
-        public VotingEventViewModel(DateEvent dateEvent)
+        //When Proposing/Voting
+        public DateEventVM(DateEvent dateEvent) : base(dateEvent)
         {
+            GenericEvent = dateEvent;
             DateEvent = dateEvent;
-            DateOptions = new ObservableCollection<DateOption>(dateEvent.DateOptions);
+            DateOptions = new ObservableCollection<DateOption>(DateEvent.DateOptions);
 
 
             foreach (DateOption i in DateOptions)
@@ -30,6 +34,33 @@ namespace Circa.ViewModels
                 System.Diagnostics.Debug.WriteLine("DateOpt en VotingVM: " + i);
             }
         }
+
+        public DateEvent ConfirmDateEvent()
+        {
+            var votingDeadline = VotingDeadlineDatePickerDate;
+            votingDeadline = votingDeadline.Add(VotingDeadlineTimePickerTime);
+
+            var fieldString = "";
+            if (FieldPickerSelectedItem != null)
+            {
+                fieldString = FieldPickerSelectedItem.ToString();
+            }
+
+            var dateEvent = new DateEvent(
+                TitleEntryText,
+                DescriptionEntryText,
+                UbicationEntryText,
+                fieldString,
+                App.myUser,
+                votingDeadline,
+                new List<DateOption>());
+
+            return dateEvent;
+        }
+
+
+
+
 
         /*
         public Command<DateTime> RemoveCommand

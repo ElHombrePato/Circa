@@ -9,20 +9,21 @@ using Xamarin.Forms;
 namespace Circa.ViewModels
 {
     //Código sacado de https://www.syncfusion.com/kb/10087/how-to-bind-selecteddates-of-calendar-in-mvvm
-    public class EventViewModel : INotifyPropertyChanged
+    public class ProposingDateEventVM : DateEventVM, INotifyPropertyChanged
     {
-        private DateEvent dateEvent = new DateEvent(App.myUser);
+        private DateEvent dateEvent;
         private List<DateTime> myDates;
         private List<DateOption> otherDateOptions;
 
 
-        public EventViewModel() //Nuevo evento
+        //New event
+        public ProposingDateEventVM()
         {
+            DateEvent = new DateEvent(App.myUser);
             MyDates = new List<DateTime>();
         }
-
-        //NUNCA SE EJECUTARÄ EL CONSTR CON ATRIBUTO
-        public EventViewModel(DateEvent dateEvent)
+        
+        public ProposingDateEventVM(DateEvent dateEvent)
         {
             MyDates = new List<DateTime>();
             OtherDateOptions = new List<DateOption>();

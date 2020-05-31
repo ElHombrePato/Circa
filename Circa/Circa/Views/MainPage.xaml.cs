@@ -28,7 +28,7 @@ namespace Circa.Views
 
         async void NewEventCreation_Clicked(object sender, EventArgs e)
         {
-            var newEventPage = new NewEventPage();
+            var newEventPage = new ProposingDateEventPage();
 
             newEventPage.Listener = this;
 
@@ -39,22 +39,32 @@ namespace Circa.Views
         async void myEventList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var eventPage = new Page(); //Padre de todas las page
-            
             var vm = BindingContext as MainViewModel;
+            DateEvent dateEvent = vm.SelectedDateEvent;
 
-            if(vm.SelectedDateEvent.VotingDeadline < DateTime.UtcNow)
+            
+
+            //The event allows Proposing and there is enough time to do it
+            if(dateEvent.ProposingIsEnabled && dateEvent.ProposingDeadline > DateTime.UtcNow)
             {
-                eventPage = new VotingEventPage(vm.SelectedDateEvent);
+                //NO FUNCIONAL!!!!!!
+                eventPage = new ProposingDateEventPage(dateEvent);
+
+                System.Diagnostics.Debug.WriteLine("Proposing");
+
                 //eventPage.Listener = this;
                 await Navigation.PushModalAsync(new NavigationPage(eventPage)).ConfigureAwait(false);
-
             }
             else
             {
-                eventPage = new NewEventPage(vm.SelectedDateEvent);
-                //eventPage.Listener = this;
+                eventPage = new VotingDateEventPage(dateEvent, this);
+
+                System.Diagnostics.Debug.WriteLine("Voting");
+
                 await Navigation.PushModalAsync(new NavigationPage(eventPage)).ConfigureAwait(false);
             }
+
+
 
             //eventPage.Listener = this;
 
@@ -69,22 +79,37 @@ namespace Circa.Views
             {
                 DateEvent tappedItem = e.Item as DateEvent;
 
-                var newEventPage = new NewEventPage(tappedItem);
+                var newEventPage = new ProposingDateEventPage(tappedItem);
 
                 newEventPage.Listener = this;
 
                 await Navigation.PushModalAsync(new NavigationPage(newEventPage)).ConfigureAwait(false);
             }
+
+            myEventList.SelectedItem = null;
         }
 
-        public void OnNewUserEvent(DateEvent dateEvent)
+        //The event is added to the DB and the VM list is refreshed
+        public void OnNewUserEvent(GenericEvent genericEvent)
         {
+            App.myUser.AddEvent(genericEvent as DateEvent);
+
             var vm = BindingContext as MainViewModel;
-            App.myUser.AddEvent(dateEvent);
             vm.MyEvents = new ObservableCollection<DateEvent>(App.myUser.Events);
         }
-        
-        
+
+        public void OnExistingUserEvent(GenericEvent genericEvent)
+        {
+            var vm = BindingContext as MainViewModel;
+
+            App.myUser.RemoveEvent(vm.SelectedDateEvent);
+            App.myUser.AddEvent(genericEvent as DateEvent);
+          
+            vm.MyEvents = new ObservableCollection<DateEvent>(App.myUser.Events);
+
+            vm.SelectedDateEvent = null;
+        }
+
         //solo se desencadena cuando se selecciona un nuevo elemento en ListView,
         void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {

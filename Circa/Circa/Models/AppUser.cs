@@ -30,7 +30,11 @@ namespace Circa.Models
             //Events.Sort();
         }
 
-        
+        public void RemoveEvent(DateEvent dateEvent)
+        {
+            Events.Remove(dateEvent);
+            //Events.Sort();
+        }
 
         public int Id { get => id; private set => id = value; }
         public string Nickname { get => nickname; set => nickname = value; }

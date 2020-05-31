@@ -15,14 +15,9 @@ using Circa.ViewModels;
 namespace Circa.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NewEventPage : TabbedPage
+    public partial class ProposingDateEventPage : TabbedPage
     {
-        //private OnNewUserEventListener listener = null;
-
-        //private DateEvent onNewUserEventListener = null;
         private MainPage listener;
-
-        //public DateEvent OnNewUserEventListener { get => onNewUserEventListener; set => onNewUserEventListener = value; }
         public MainPage Listener { get => listener; set => listener = value; }
 
         //private static List<DateTime> inCreationVotedDates = new List<DateTime>();
@@ -30,11 +25,11 @@ namespace Circa.Views
         //private static List<VotedDate> inCreationVotedDates = new List<VotedDate>();
         //private CalendarEventCollection CalendarInlineEvents { get; set; } = new CalendarEventCollection();
 
-        public NewEventPage()
+        public ProposingDateEventPage()
         {
             InitializeComponent();
 
-            this.BindingContext = new EventViewModel();
+            this.BindingContext = new ProposingDateEventVM();
 
             FieldPicker.ItemsSource = GenericEvent.eventFieldArray;
             MaxPropositionsPerUserPicker.ItemsSource = GenericEvent.maxPropositionsPerUserArray;
@@ -45,35 +40,13 @@ namespace Circa.Views
             //votedDatesListView.ItemsSource = CalendarInlineEvents;
         }
 
-        public NewEventPage(DateEvent dateEvent)
+        public ProposingDateEventPage(DateEvent dateEvent)
         {
             InitializeComponent();
 
-            this.BindingContext = new EventViewModel();
+            this.BindingContext = new ProposingDateEventVM();
 
             FieldPicker.ItemsSource = DateEvent.eventFieldArray;
-
-            //Ya hay un evento creado (votar, proponer, modificar) 
-            TitleEntry.Text = dateEvent.Title;
-            DescriptionEntry.Text = dateEvent.Description;
-            UbicationEntry.Text = dateEvent.Ubication;
-            FieldPicker.SelectedItem = dateEvent.Field;
-            VotingDeadlineDatePicker.Date = dateEvent.VotingDeadline.Date;
-            VotingDeadlineTimePicker.Time = dateEvent.VotingDeadline.TimeOfDay;
-
-            if (!dateEvent.Admin.Equals(App.myUser))
-            {
-                TitleEntry.IsEnabled = false;
-                //RESTO
-            }
-
-            /*
-            if ()
-            {
-
-            }
-            */
-
 
             //LIDIAR CON LAS FECHAS
             //HACER DOS LISTAS, UNA PARA TI Y OTRA CON EL RESTO DE FECHAS (esta QUE SEAN DATEOPTION)
@@ -84,61 +57,13 @@ namespace Circa.Views
 
         private async void ConfirmNewEvent_Clicked(object sender, EventArgs e)
         {
-            var votingDeadline = VotingDeadlineDatePicker.Date;
-            votingDeadline = votingDeadline.Add(VotingDeadlineTimePicker.Time);
+            var vm = BindingContext as ProposingDateEventVM;
 
-            var fieldString = "";
-            if (FieldPicker.SelectedItem != null)
-            {
-                fieldString = FieldPicker.SelectedItem.ToString();
-            }
-
-            //var dateEvent = BindingContext as DateEvent;
-            //System.Diagnostics.Debug.WriteLine("Date en NewEvent: " + dateEvent.Admin);
-
-            var vm = BindingContext as EventViewModel;
-            var i = 0;
-
-            foreach (DateTime dT in vm.MyDates)
-            {
-                i++;
-                System.Diagnostics.Debug.WriteLine(i + ") " + dT);
-            }
-
-            var newDateEvent = new DateEvent(
-                TitleEntry.Text,
-                DescriptionEntry.Text,
-                UbicationEntry.Text,
-                fieldString,
-                App.myUser,
-                votingDeadline,
-                new List<DateOption>());
-
-            //  EventViewModel.DatesToDateOptions(vm.MyDates)
-
-            //PASAR LA CREACIÖN DEL EVENTO AQUÍ, PERO AÑADIRLO AL USER EN EL MAIN
-
-            /*
-            var vm = BindingContext as MainPage;
-            var vm = BindingContext as OnNewUserEventListener;
-            vm.CreateEvent(
-                titleEntry.Text,
-                descriptionEntry.Text,
-                fieldString,
-                //App.admin,
-                votingDeadline);
-
-            System.Diagnostics.Debug.WriteLine(votingDeadline);
-            */
-
-            //App.admin.Events.Add(inCreationEvent);
-
-            //Notify listener
+            //Mandamos el evento al MainPage para que lo guarde en la BD y lo muestre
             if (Listener != null)
             {
-                Listener.OnNewUserEvent(newDateEvent);
+                Listener.OnNewUserEvent(vm.ConfirmDateEvent());
             }
-
 
             await Navigation.PopModalAsync().ConfigureAwait(false);
         }
