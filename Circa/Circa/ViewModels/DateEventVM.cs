@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Circa.ViewModels
@@ -12,13 +13,14 @@ namespace Circa.ViewModels
     {
         private DateEvent dateEvent;
 
-        private ObservableCollection<DateOption> dateOptions;
+        //private ObservableCollection<DateOption> dateOptions;
 
         //Used if it is a new Date event
         public DateEventVM() : base()
         {
-            DateEvent = GenericEvent as DateEvent;
-            DateOptions = new ObservableCollection<DateOption>();
+            //ES INNECESARIO DATEEVENT?
+            DateEvent = new DateEvent(App.myUser);
+            //DateOptions = new ObservableCollection<DateOption>();
         }
 
         //When Proposing/Voting
@@ -26,6 +28,8 @@ namespace Circa.ViewModels
         {
             GenericEvent = dateEvent;
             DateEvent = dateEvent;
+            
+            /*
             DateOptions = new ObservableCollection<DateOption>(DateEvent.DateOptions);
 
 
@@ -33,29 +37,17 @@ namespace Circa.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine("DateOpt en VotingVM: " + i);
             }
+            */
         }
 
-        public DateEvent ConfirmDateEvent()
+        public DateEvent ConfirmDateEvent(List<DateOption> dateOptions)
         {
-            var votingDeadline = VotingDeadlineDatePickerDate;
-            votingDeadline = votingDeadline.Add(VotingDeadlineTimePickerTime);
+            ConfirmGenericEvent();
 
-            var fieldString = "";
-            if (FieldPickerSelectedItem != null)
-            {
-                fieldString = FieldPickerSelectedItem.ToString();
-            }
-
-            var dateEvent = new DateEvent(
-                TitleEntryText,
-                DescriptionEntryText,
-                UbicationEntryText,
-                fieldString,
-                App.myUser,
-                votingDeadline,
-                new List<DateOption>());
+            dateEvent.DateOptions = dateOptions;
 
             return dateEvent;
+
         }
 
 
@@ -79,7 +71,7 @@ namespace Circa.ViewModels
         */
 
         public DateEvent DateEvent { get => dateEvent; set => dateEvent = value; }
-        public ObservableCollection<DateOption> DateOptions { get => dateOptions; set => dateOptions = value; }
+        //public ObservableCollection<DateOption> DateOptions { get => dateOptions; set => dateOptions = value; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,6 +1,7 @@
 ﻿using Circa.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,19 +12,19 @@ namespace Circa.ViewModels
     //Código sacado de https://www.syncfusion.com/kb/10087/how-to-bind-selecteddates-of-calendar-in-mvvm
     public class ProposingDateEventVM : DateEventVM, INotifyPropertyChanged
     {
-        private DateEvent dateEvent;
         private List<DateTime> myDates;
         private List<DateOption> otherDateOptions;
 
 
         //New event
-        public ProposingDateEventVM()
+        public ProposingDateEventVM() : base()
         {
-            DateEvent = new DateEvent(App.myUser);
+            //Generic Event?
+            //DateEvent = new DateEvent(App.myUser);
             MyDates = new List<DateTime>();
         }
         
-        public ProposingDateEventVM(DateEvent dateEvent)
+        public ProposingDateEventVM(DateEvent dateEvent) : base(dateEvent)
         {
             MyDates = new List<DateTime>();
             OtherDateOptions = new List<DateOption>();
@@ -33,7 +34,7 @@ namespace Circa.ViewModels
 
         public void DevideDateOptionsList()
         {
-            var dateOptions = dateEvent.DateOptions;
+            var dateOptions = DateEvent.DateOptions;
 
             if (dateOptions != null)
             {
@@ -56,7 +57,7 @@ namespace Circa.ViewModels
         {
             var myDateOptions = DatesToDateOptions(MyDates);
 
-            dateEvent.DateOptions = OtherDateOptions.Concat(myDateOptions) as List<DateOption>;
+            DateEvent.DateOptions = OtherDateOptions.Concat(myDateOptions) as List<DateOption>;
         }
 
         public static List<DateOption> DatesToDateOptions(List<DateTime> dates)
@@ -70,6 +71,15 @@ namespace Circa.ViewModels
 
             return dateOptions;
         }
+
+        //SOLO FUNCIONA PARA EVENTOS SIN PROPOSING
+        public DateEvent ConfirmProposingDateEvent()
+        {
+            var dateEvent = ConfirmDateEvent(DatesToDateOptions(MyDates));
+
+            return dateEvent;
+        }
+
 
         /*
         public void DateOptionsToDates(List<DateOption> dateOptions)
@@ -105,12 +115,6 @@ namespace Circa.ViewModels
             }
         }
 
-
-
-
-
-
-
         public List<DateTime> MyDates
         {
             get { return myDates; }
@@ -131,8 +135,6 @@ namespace Circa.ViewModels
             }
                 
         }
-
-        public DateEvent DateEvent { get => dateEvent; set => dateEvent = value; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

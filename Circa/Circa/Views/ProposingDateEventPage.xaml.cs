@@ -25,7 +25,7 @@ namespace Circa.Views
         //private static List<VotedDate> inCreationVotedDates = new List<VotedDate>();
         //private CalendarEventCollection CalendarInlineEvents { get; set; } = new CalendarEventCollection();
 
-        public ProposingDateEventPage()
+        public ProposingDateEventPage() //Listenber como atributo!!!!!!!
         {
             InitializeComponent();
 
@@ -62,7 +62,7 @@ namespace Circa.Views
             //Mandamos el evento al MainPage para que lo guarde en la BD y lo muestre
             if (Listener != null)
             {
-                Listener.OnNewUserEvent(vm.ConfirmDateEvent());
+                Listener.OnNewUserEvent(vm.ConfirmProposingDateEvent());
             }
 
             await Navigation.PopModalAsync().ConfigureAwait(false);

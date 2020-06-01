@@ -39,22 +39,22 @@ namespace Circa.ViewModels
         private TimeSpan proposingDeadlineTimePickerTime;
 
 
-        //Not used directly, but it is neccesary to implement inheritance
-        public GenericEventVM()
+        //Not used directly, but it is neccesary to implement inheritance in New events
+        protected GenericEventVM()
         {
-            //GenericEvent = new GenericEvent(App.myUser);
-
+            GenericEvent = new GenericEvent(App.myUser);
+            //GenericEvent.Admin = App.myUser;
+            FillForm();
             SetAllEnableAttributesTo(false);
             proposingUsersSwitchIsEnabled = false;
         }
         
-        
-        
-        public GenericEventVM(GenericEvent genericEvent)
+        protected GenericEventVM(GenericEvent genericEvent)
         {
             GenericEvent = genericEvent;
 
             FillForm();
+            //SetAllEnableAttributesTo(false);
 
             if (GenericEvent.Admin.Equals(App.myUser))
             {
@@ -63,6 +63,7 @@ namespace Circa.ViewModels
 
             if (GenericEvent.ProposingIsEnabled)
             {
+                proposingUsersSwitchIsEnabled = false;
                 proposingUsersBlockIsVisible = true;
             }
         }
@@ -104,6 +105,53 @@ namespace Circa.ViewModels
             ProposingDeadlineTimePickerIsEnabled = b;
 
 
+        }
+
+        protected void ConfirmGenericEvent()
+        {
+            //You only admit changes in the attributes if the user is admin
+            if (GenericEvent.Admin == App.myUser)
+            {
+                var votingDeadline = VotingDeadlineDatePickerDate;
+                votingDeadline = votingDeadline.Add(VotingDeadlineTimePickerTime);
+
+                var proposingDeadline = ProposingDeadlineDatePickerDate;
+                proposingDeadline = proposingDeadline.Add(ProposingDeadlineTimePickerTime);
+
+                var fieldString = "";
+                if (FieldPickerSelectedItem != null)
+                {
+                    fieldString = FieldPickerSelectedItem.ToString();
+                }
+
+                //Even if some cannot be change after creation, all are neccesary for New events
+                GenericEvent.Title = TitleEntryText;
+                GenericEvent.Description = DescriptionEntryText;
+                GenericEvent.Ubication = UbicationEntryText;
+                GenericEvent.Field = fieldString;
+                //Admin stays the same always (the Admin is set when the VM is called)
+                GenericEvent.VotingDeadline = votingDeadline;
+
+                GenericEvent.ProposingIsEnabled = ProposingUsersSwitchIsEnabled;
+                GenericEvent.MaxPropositionsPerUser = MaxPropositionsPerUserPickerSelectedItem;
+                GenericEvent.ProposingDeadline = proposingDeadline;
+            }
+
+            /*
+            genericEvent.Title = GenericEvent.Title;
+            genericEvent.Description = GenericEvent.Description;
+            genericEvent.Ubication = GenericEvent.Ubication;
+            genericEvent.Field = GenericEvent.Field;
+
+            genericEvent.Admin = GenericEvent.Admin;
+            genericEvent.VotingDeadline = GenericEvent.VotingDeadline;
+
+            genericEvent.ProposingIsEnabled = GenericEvent.ProposingIsEnabled;
+            genericEvent.MaxPropositionsPerUser = GenericEvent.MaxPropositionsPerUser;
+            genericEvent.ProposingDeadline = GenericEvent.ProposingDeadline;
+
+            return genericEvent;
+            */
         }
 
         //public MainPage Listener { get => listener; set => listener = value; }

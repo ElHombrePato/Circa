@@ -44,7 +44,7 @@ namespace Circa.Views
             //Mandamos el evento al MainPage para que lo guarde en la BD y lo muestre
             if (Listener != null)
             {
-                Listener.OnExistingUserEvent(vm.ConfirmDateEvent());
+                Listener.OnExistingUserEvent(vm.ConfirmVotingDateEvent());
             }
 
             await Navigation.PopModalAsync().ConfigureAwait(false);

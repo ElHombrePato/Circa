@@ -42,12 +42,12 @@ namespace Circa.Views
             var vm = BindingContext as MainViewModel;
             DateEvent dateEvent = vm.SelectedDateEvent;
 
-            
+            //TODO REVISAR!!!!!!!!
 
             //The event allows Proposing and there is enough time to do it
             if(dateEvent.ProposingIsEnabled && dateEvent.ProposingDeadline > DateTime.UtcNow)
             {
-                //NO FUNCIONAL!!!!!!
+                //NO FUNCIONAL!!!!!! FALTA EL LISTENER POR EL CONSTRUCTOR
                 eventPage = new ProposingDateEventPage(dateEvent);
 
                 System.Diagnostics.Debug.WriteLine("Proposing");

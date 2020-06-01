@@ -84,7 +84,7 @@
 
                             <Image Source="{local:ImageResource Circa.Images.089-steering.png}" Grid.Row="2" Grid.Column="0"/>
                             <Picker x:Name="FieldPicker"   
-                                    
+                                    SelectedItem="{Binding FieldPickerSelectedItem}"
                                     Title="Ámbito"
                                     Grid.Row="2" Grid.Column="1" />
                             <!--

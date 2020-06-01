@@ -10,16 +10,6 @@ namespace Circa.Models
     {
         //private const List<DateOption> DEFAULT_DATE_OPTIONS = new List<DateOption>();
 
-        /*
-        public static readonly string[] eventFieldArray = new string[]
-        {
-            "Familia",
-            "Trabajo",
-            "Amigos",
-            "Médico"
-        };
-        */
-
         private List<DateOption> dateOptions;
 
         public DateEvent() : base()
@@ -38,11 +28,27 @@ namespace Circa.Models
             DateOptions = dateOptions;
         }
 
-        public DateEvent(string title, string description, string ubication, string field, AppUser admin, DateTime votingDeadline, int maxPropositionsPerUser, DateTime proposingDeadline, bool proposingIsEnabled, List<DateOption> dateOptions)
+        public DateEvent(string title, string description, string ubication, string field, AppUser admin, DateTime votingDeadline, bool proposingIsEnabled, int maxPropositionsPerUser, DateTime proposingDeadline, List<DateOption> dateOptions)
             :base(title, description, ubication, field, admin, votingDeadline, proposingIsEnabled, maxPropositionsPerUser, proposingDeadline)
         {
             DateOptions = dateOptions;
         }
+
+        public DateEvent(GenericEvent genericEvent)
+        {
+            Title = genericEvent.Title;
+            Description = genericEvent.Description;
+            Field = genericEvent.Field;
+            Admin = genericEvent.Admin;
+            VotingDeadline = genericEvent.VotingDeadline;
+            ProposingIsEnabled = genericEvent.ProposingIsEnabled;
+            MaxPropositionsPerUser = genericEvent.MaxPropositionsPerUser;
+            ProposingDeadline = genericEvent.ProposingDeadline;
+
+            DateOptions = new List<DateOption>();
+        }
+
+
 
         public static List<DateOption> createUserDatesList(List<DateTime> toBeAddedDates, AppUser proposer)
         {

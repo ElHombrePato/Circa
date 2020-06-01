@@ -9,7 +9,7 @@ namespace Circa.Models
     IConvertible, IEquatable<DateTime>,
     IFormattable, System.Runtime.Serialization.ISerializable
     */
-    public abstract class GenericEvent
+    public class GenericEvent
     {
         protected const string DEFAULT_TITLE = "<Sin título>";
         protected const string DEFAULT_DESCRIPTION = "<Sin ubicación>";
@@ -56,7 +56,7 @@ namespace Circa.Models
             Ubication = DEFAULT_UBICATION;
             Field = DEFAULT_FIELD;
             VotingDeadline = VOTING_DEADLINE;
-            //Admin = admin;
+            Admin = App.myUser;
 
             ProposingIsEnabled = DEFAULT_PROPOSING_IS_ENABLED;
             MaxPropositionsPerUser = DEFAULT_MAX_PROPOSITIONS_PER_USER;
