@@ -44,6 +44,9 @@ namespace Circa.ViewModels
         {
             ConfirmGenericEvent();
 
+            //This is not the DateEvent attribute
+            var dateEvent = new DateEvent(GenericEvent);
+
             dateEvent.DateOptions = dateOptions;
 
             return dateEvent;

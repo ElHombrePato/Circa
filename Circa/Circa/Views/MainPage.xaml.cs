@@ -28,9 +28,7 @@ namespace Circa.Views
 
         async void NewEventCreation_Clicked(object sender, EventArgs e)
         {
-            var newEventPage = new ProposingDateEventPage();
-
-            newEventPage.Listener = this;
+            var newEventPage = new ProposingDateEventPage(this);
 
             await Navigation.PushModalAsync(new NavigationPage(newEventPage)).ConfigureAwait(false);
 
@@ -47,12 +45,10 @@ namespace Circa.Views
             //The event allows Proposing and there is enough time to do it
             if(dateEvent.ProposingIsEnabled && dateEvent.ProposingDeadline > DateTime.UtcNow)
             {
-                //NO FUNCIONAL!!!!!! FALTA EL LISTENER POR EL CONSTRUCTOR
-                eventPage = new ProposingDateEventPage(dateEvent);
+                eventPage = new ProposingDateEventPage(dateEvent, this);
 
                 System.Diagnostics.Debug.WriteLine("Proposing");
 
-                //eventPage.Listener = this;
                 await Navigation.PushModalAsync(new NavigationPage(eventPage)).ConfigureAwait(false);
             }
             else
@@ -79,9 +75,7 @@ namespace Circa.Views
             {
                 DateEvent tappedItem = e.Item as DateEvent;
 
-                var newEventPage = new ProposingDateEventPage(tappedItem);
-
-                newEventPage.Listener = this;
+                var newEventPage = new ProposingDateEventPage(tappedItem, this);
 
                 await Navigation.PushModalAsync(new NavigationPage(newEventPage)).ConfigureAwait(false);
             }

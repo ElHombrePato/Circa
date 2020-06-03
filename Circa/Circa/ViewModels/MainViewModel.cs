@@ -29,7 +29,6 @@ namespace Circa.ViewModels
         {
             get
             {
-                //RaisePropertyChanged("MyEvents");
                 return myEvents;
             }
             set

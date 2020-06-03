@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CA1707: Quite los caracteres de subrayado del nombre de miembro Circa.Models.GenericEvent.DEFAULT_DESCRIPTION.
+dotnet_diagnostic.CA1707.severity = none

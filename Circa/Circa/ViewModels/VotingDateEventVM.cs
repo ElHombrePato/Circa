@@ -13,7 +13,7 @@ namespace Circa.ViewModels
         public ObservableCollection<DateOption> DateOptions { get => dateOptions; set => dateOptions = value; }
         public VotingDateEventVM(DateEvent dateEvent) : base(dateEvent)
         {
-            //Empty
+            //TODO functionality
         }
 
         //TODO guardar lo9s cambios en la lista

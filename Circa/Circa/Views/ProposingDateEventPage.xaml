@@ -59,9 +59,12 @@
     <ContentPage Title="Características">
         <ScrollView>
             <StackLayout Margin="10, 10">
+
                 <Frame Style="{StaticResource FrameStyle}">
                     <Entry x:Name="TitleEntry"
-                           Placeholder="Título"/>
+                           Text="{Binding TitleEntryText}"
+                           Placeholder="Título"
+                           IsEnabled="{Binding TitleEntryIsEnabled}"/>
                 </Frame>
 
                 <Frame Style="{StaticResource FrameStyle}">
@@ -80,17 +83,35 @@
                             </Grid.ColumnDefinitions>
 
                             <Image Source="{local:ImageResource Circa.Images.112-information.png}" Grid.Row="0" Grid.Column="0"/>
-                            <Entry x:Name="DescriptionEntry" Placeholder="Descripción" Grid.Row="0" Grid.Column="1"/>
+                            <Entry x:Name="DescriptionEntry"
+                                   Text="{Binding DescriptionEntryText}"
+                                   Placeholder="Descripción"
+                                   IsEnabled="{Binding DescriptionEntryIsEnabled}"
+                                   Grid.Row="0" Grid.Column="1"/>
 
                             <Image Source="{local:ImageResource Circa.Images.138-maps-and-flags-1.png}" Grid.Row="1" Grid.Column="0"/>
-                            <Entry x:Name="UbicationEntry" Placeholder="Ubicación" Grid.Row="1" Grid.Column="1"/>
+                            <Entry x:Name="UbicationEntry"
+                                   Text="{Binding UbicationEntryText}"
+                                   Placeholder="Ubicación"
+                                   IsEnabled="{Binding UbicationEntryIsEnabled}"
+                                   Grid.Row="1" Grid.Column="1"/>
 
                             <Image Source="{local:ImageResource Circa.Images.089-steering.png}" Grid.Row="2" Grid.Column="0"/>
-                            <Picker x:Name="FieldPicker" Title="Ámbito" Grid.Row="2" Grid.Column="1" />
+                            <Picker x:Name="FieldPicker"   
+                                    SelectedIndex="{Binding FieldPickerSelectedIndex}"
+                                    Title="Ámbito"
+                                    IsEnabled="{Binding FieldPickerIsEnabled}"
+                                    Grid.Row="2" Grid.Column="1" />
+                            <!--
+                            SelectedIndex="1"
+                            FieldPicker.SelectedItem = dateEvent.Field
+                            SelectedItem="{Binding FieldPickerSelectedItem}"
+                            ItemDisplayBinding="{Binding FieldPickerSelectedItem}"
+                            -->
                         </Grid>
 
                         <Label Text="Límite de tiempo para votar:"/>
-                        
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -102,8 +123,14 @@
                             </Grid.ColumnDefinitions>
 
                             <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
-                            <DatePicker x:Name="VotingDeadlineDatePicker" Grid.Column="1"/>
-                            <TimePicker x:Name="VotingDeadlineTimePicker" Grid.Column="2"/>
+                            <DatePicker x:Name="VotingDeadlineDatePicker"
+                                        Date="{Binding VotingDeadlineDatePickerDate}"
+                                        IsEnabled="{Binding VotingDeadlinePickerIsEnabled}"
+                                        Grid.Column="1"/>
+                            <TimePicker x:Name="VotingDeadlineTimePicker"
+                                        Time="{Binding VotingDeadlineTimePickerTime}"
+                                        IsEnabled="{Binding VotingDeadlinePickerIsEnabled}"
+                                        Grid.Column="2"/>
                         </Grid>
                     </StackLayout>
                 </Frame>
@@ -122,12 +149,15 @@
                             <Label Text="Usuarios pueden proponer"
                                    Style="{StaticResource SectionLabel}"
                                    Grid.Column="0"/>
-                            <Switch x:Name="ProposingIsEnabledSwitch"
-                                    Toggled="ProposingIsEnabledSwitch_Toggled"
+                            <Switch x:Name="ProposingUsersSwitch"
+                                    Toggled="ProposingUsersSwitch_Toggled"
+                                    IsToggled="{Binding ProposingUsersSwitchIsToggled}"
+                                    IsEnabled="{Binding ProposingUsersSwitchIsEnabled}"
                                     Grid.Column="1"/>
                         </Grid>
-                        
-                        <StackLayout x:Name="ProposingUsersBlock" IsVisible="False">
+
+                        <StackLayout x:Name="ProposingUsersBlock"
+                                     IsVisible="False">
                             <Grid x:Name="MaxPropositionsPerUserGrid">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -141,10 +171,12 @@
                                 <Image Source="{local:ImageResource Circa.Images.196-user.png}"
                                     Grid.Row="0" Grid.Column="0"/>
                                 <Label Text="Límite de aportaciones"
-                                       Grid.Row="0" Grid.Column="1"/>
+                                    Grid.Row="0" Grid.Column="1"/>
                                 <Picker x:Name="MaxPropositionsPerUserPicker"
-                                        Title="  3"
-                                        Grid.Row="0" Grid.Column="2"/>
+                                    SelectedItem="{Binding MaxPropositionsPerUserPickerSelectedItem}"
+                                    Title="  3"
+                                    IsEnabled="{Binding MaxPropositionsPerUserPickerIsEnabled}"
+                                    Grid.Row="0" Grid.Column="2"/>
                             </Grid>
 
                             <Label x:Name="ProposingDeadlineLabel"
@@ -160,83 +192,20 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
-                                <DatePicker x:Name="ProposingDeadlineDatePicker" Grid.Column="1"/>
-                                <TimePicker x:Name="ProposingDeadlineTimePicker" Grid.Column="2"/>
+                                <Image Source="{local:ImageResource Circa.Images.118-number-1.png}"
+                                       Grid.Column="0"/>
+                                <DatePicker x:Name="ProposingDeadlineDatePicker"
+                                            Date="{Binding ProposingDeadlineDatePickerDate}"
+                                            IsEnabled="{Binding ProposingDeadlinePickerIsEnabled}"
+                                            Grid.Column="1"/>
+                                <TimePicker x:Name="ProposingDeadlineTimePicker"
+                                            Time="{Binding ProposingDeadlineTimePickerTime}"
+                                            IsEnabled="{Binding ProposingDeadlinePickerIsEnabled}"
+                                            Grid.Column="2"/>
                             </Grid>
                         </StackLayout>
-
-                        <!--
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Label Text="Usuarios pueden proponer"
-                                   Style="{StaticResource SectionLabel}"
-                                   Grid.Column="0"/>
-                                <Switch x:Name="ProposingIsEnabledSwitch"
-                                    Toggled="ProposingIsEnabledSwitch_Toggled"
-                                    Grid.Column="1"/>
-                            </Grid>
-
-                            <Grid x:Name="MaxPropositionsPerUserGrid" Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Image Source="{local:ImageResource Circa.Images.196-user.png}"
-                                    Grid.Row="0" Grid.Column="0"/>
-                                <Label Text="Límite de aportaciones"
-                                       Grid.Row="0" Grid.Column="1"/>
-                                <Picker x:Name="MaxPropositionsPerUserPicker"
-                                        Title="  3"
-                                        Grid.Row="0" Grid.Column="2"/>
-                            </Grid>
-
-                            <Label x:Name="ProposingDeadlineLabel" Text="Límite de tiempo para proponer:" Grid.Row="2" Grid.Column="0"/>
-
-                            <Grid x:Name="ProposingDeadlineGrid" Grid.Row="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
-                                <DatePicker x:Name="ProposingDeadlineDatePicker" Grid.Column="1"/>
-                                <TimePicker x:Name="ProposingDeadlineTimePicker" Grid.Column="2"/>
-                            </Grid>
-                            
-                            
-                        </Grid>
-                        -->
                     </StackLayout>
                 </Frame>
-                
             </StackLayout>
         </ScrollView>
     </ContentPage>

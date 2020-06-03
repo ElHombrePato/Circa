@@ -22,11 +22,10 @@ namespace Circa.Views
             InitializeComponent();
 
             Listener = listener;
+            FieldPicker.ItemsSource = GenericEvent.EVENT_FIELDS.Values.ToList<String>();
+            MaxPropositionsPerUserPicker.ItemsSource = GenericEvent.maxPropositionsPerUserArray;
 
             this.BindingContext = new VotingDateEventVM(dateEvent);
-
-            FieldPicker.ItemsSource = GenericEvent.eventFieldArray;
-            MaxPropositionsPerUserPicker.ItemsSource = GenericEvent.maxPropositionsPerUserArray;
         }
 
         private async void ConfirmNewEvent_Clicked(object sender, EventArgs e)
@@ -38,6 +37,7 @@ namespace Circa.Views
                 System.Diagnostics.Debug.WriteLine(i + ") " + dT);
             }
             */
+
 
             var vm = BindingContext as VotingDateEventVM;
 
@@ -55,10 +55,10 @@ namespace Circa.Views
             await Navigation.PopModalAsync().ConfigureAwait(false);
         }
 
-
         private void ProposingUsersSwitch_Toggled(object sender, ToggledEventArgs e)
         {
             ProposingUsersBlock.IsVisible = !ProposingUsersBlock.IsVisible;
         }
+        
     }
 }

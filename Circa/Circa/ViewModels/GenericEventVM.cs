@@ -2,11 +2,12 @@
 using Circa.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Circa.ViewModels
 {
-    public abstract class GenericEventVM
+    public abstract class GenericEventVM : INotifyPropertyChanged
     {
         //private MainPage listener;
 
@@ -15,28 +16,39 @@ namespace Circa.ViewModels
         private bool titleEntryIsEnabled;
         private bool descriptionEntryIsEnabled;
         private bool ubicationEntryIsEnabled;
-        private bool fieldEntryIsEnabled;
-        private bool votingDeadlineDatePickerIsEnabled;
-        private bool votingDeadlineTimePickerIsEnabled;
+        private bool fieldPickerIsEnabled;
+        private bool votingDeadlinePickerIsEnabled;
 
-        //PropisongSwitch mejor?
         private bool proposingUsersSwitchIsEnabled;
-        private bool proposingUsersBlockIsVisible;
+        //private bool proposingUsersBlockIsVisible;
 
         private bool maxPropositionsPerUserPickerIsEnabled;
-        private bool proposingDeadlineDatePickerIsEnabled;
-        private bool proposingDeadlineTimePickerIsEnabled;
+        private bool proposingDeadlinePickerIsEnabled;
 
         private string titleEntryText;
         private string descriptionEntryText;
         private string ubicationEntryText;
-        private string fieldPickerSelectedItem;
+        private int fieldPickerSelectedIndex;
         private DateTime votingDeadlineDatePickerDate;
         private TimeSpan votingDeadlineTimePickerTime;
 
+        private bool proposingUsersSwitchIsToggled;
         private int maxPropositionsPerUserPickerSelectedItem;
         private DateTime proposingDeadlineDatePickerDate;
         private TimeSpan proposingDeadlineTimePickerTime;
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(String Name)
+        {
+            if (PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(Name));
+            }
+
+        }
+
 
 
         //Not used directly, but it is neccesary to implement inheritance in New events
@@ -45,8 +57,10 @@ namespace Circa.ViewModels
             GenericEvent = new GenericEvent(App.myUser);
             //GenericEvent.Admin = App.myUser;
             FillForm();
-            SetAllEnableAttributesTo(false);
-            proposingUsersSwitchIsEnabled = false;
+            SetAllEnableAttributesTo(true);
+            ProposingUsersSwitchIsEnabled = true;
+            ProposingUsersSwitchIsToggled = false;
+            //proposingUsersBlockIsVisible = false;
         }
         
         protected GenericEventVM(GenericEvent genericEvent)
@@ -61,10 +75,16 @@ namespace Circa.ViewModels
                 EnableAdminFields();
             }
 
+            //TODO ewnable NO funciona!!!!!!
+            ProposingUsersSwitchIsEnabled = false;
+            ProposingUsersSwitchIsToggled = false;
+            //ProposingUsersBlockIsVisible = false;
+
             if (GenericEvent.ProposingIsEnabled)
             {
-                proposingUsersSwitchIsEnabled = false;
-                proposingUsersBlockIsVisible = true;
+                //ProposingUsersSwitchIsEnabled = true;
+                ProposingUsersSwitchIsToggled = true;
+                //proposingUsersBlockIsVisible = true;
             }
         }
 
@@ -73,8 +93,7 @@ namespace Circa.ViewModels
             TitleEntryIsEnabled = true;
             DescriptionEntryIsEnabled = true;
             UbicationEntryIsEnabled = true;
-            FieldEntryIsEnabled = true;
-
+            FieldPickerIsEnabled = true;
         }
 
         protected void FillForm()
@@ -82,9 +101,11 @@ namespace Circa.ViewModels
             TitleEntryText = GenericEvent.Title;
             DescriptionEntryText = GenericEvent.Description;
             UbicationEntryText = GenericEvent.Ubication;
-            FieldPickerSelectedItem = GenericEvent.Field;
+            FieldPickerSelectedIndex = GenericEvent.FieldKey;
             VotingDeadlineDatePickerDate = GenericEvent.VotingDeadline.Date;
             VotingDeadlineTimePickerTime = GenericEvent.VotingDeadline.TimeOfDay;
+
+            //TODO meter atributos de interfaz?
 
             MaxPropositionsPerUserPickerSelectedItem = GenericEvent.MaxPropositionsPerUser;
             ProposingDeadlineDatePickerDate = GenericEvent.ProposingDeadline.Date;
@@ -96,13 +117,11 @@ namespace Circa.ViewModels
             TitleEntryIsEnabled = b;
             DescriptionEntryIsEnabled = b;
             UbicationEntryIsEnabled = b;
-            FieldEntryIsEnabled = b;
-            VotingDeadlineDatePickerIsEnabled = b;
-            VotingDeadlineTimePickerIsEnabled = b;
+            FieldPickerIsEnabled = b;
+            VotingDeadlinePickerIsEnabled = b;
 
             MaxPropositionsPerUserPickerIsEnabled = b;
-            ProposingDeadlineDatePickerIsEnabled = b;
-            ProposingDeadlineTimePickerIsEnabled = b;
+            ProposingDeadlinePickerIsEnabled = b;
 
 
         }
@@ -118,64 +137,76 @@ namespace Circa.ViewModels
                 var proposingDeadline = ProposingDeadlineDatePickerDate;
                 proposingDeadline = proposingDeadline.Add(ProposingDeadlineTimePickerTime);
 
-                var fieldString = "";
-                if (FieldPickerSelectedItem != null)
+                var fieldIndex = 404;
+                if (FieldPickerSelectedIndex != null)
                 {
-                    fieldString = FieldPickerSelectedItem.ToString();
+                    fieldIndex = FieldPickerSelectedIndex;
                 }
 
                 //Even if some cannot be change after creation, all are neccesary for New events
                 GenericEvent.Title = TitleEntryText;
                 GenericEvent.Description = DescriptionEntryText;
                 GenericEvent.Ubication = UbicationEntryText;
-                GenericEvent.Field = fieldString;
+                GenericEvent.FieldKey = fieldIndex;
                 //Admin stays the same always (the Admin is set when the VM is called)
                 GenericEvent.VotingDeadline = votingDeadline;
 
-                GenericEvent.ProposingIsEnabled = ProposingUsersSwitchIsEnabled;
+                GenericEvent.ProposingIsEnabled = ProposingUsersSwitchIsToggled;
                 GenericEvent.MaxPropositionsPerUser = MaxPropositionsPerUserPickerSelectedItem;
                 GenericEvent.ProposingDeadline = proposingDeadline;
             }
 
-            /*
-            genericEvent.Title = GenericEvent.Title;
-            genericEvent.Description = GenericEvent.Description;
-            genericEvent.Ubication = GenericEvent.Ubication;
-            genericEvent.Field = GenericEvent.Field;
 
-            genericEvent.Admin = GenericEvent.Admin;
-            genericEvent.VotingDeadline = GenericEvent.VotingDeadline;
+        /*
+        genericEvent.Title = GenericEvent.Title;
+        genericEvent.Description = GenericEvent.Description;
+        genericEvent.Ubication = GenericEvent.Ubication;
+        genericEvent.Field = GenericEvent.Field;
 
-            genericEvent.ProposingIsEnabled = GenericEvent.ProposingIsEnabled;
-            genericEvent.MaxPropositionsPerUser = GenericEvent.MaxPropositionsPerUser;
-            genericEvent.ProposingDeadline = GenericEvent.ProposingDeadline;
+        genericEvent.Admin = GenericEvent.Admin;
+        genericEvent.VotingDeadline = GenericEvent.VotingDeadline;
 
-            return genericEvent;
-            */
-        }
+        genericEvent.ProposingIsEnabled = GenericEvent.ProposingIsEnabled;
+        genericEvent.MaxPropositionsPerUser = GenericEvent.MaxPropositionsPerUser;
+        genericEvent.ProposingDeadline = GenericEvent.ProposingDeadline;
+
+        return genericEvent;
+        */
+    }
 
         //public MainPage Listener { get => listener; set => listener = value; }
         public GenericEvent GenericEvent { get => genericEvent; set => genericEvent = value; }
         public bool TitleEntryIsEnabled { get => titleEntryIsEnabled; set => titleEntryIsEnabled = value; }
         public bool DescriptionEntryIsEnabled { get => descriptionEntryIsEnabled; set => descriptionEntryIsEnabled = value; }
         public bool UbicationEntryIsEnabled { get => ubicationEntryIsEnabled; set => ubicationEntryIsEnabled = value; }
-        public bool FieldEntryIsEnabled { get => fieldEntryIsEnabled; set => fieldEntryIsEnabled = value; }
-        public bool VotingDeadlineDatePickerIsEnabled { get => votingDeadlineDatePickerIsEnabled; set => votingDeadlineDatePickerIsEnabled = value; }
-        public bool VotingDeadlineTimePickerIsEnabled { get => votingDeadlineTimePickerIsEnabled; set => votingDeadlineTimePickerIsEnabled = value; }
+        public bool FieldPickerIsEnabled { get => fieldPickerIsEnabled; set => fieldPickerIsEnabled = value; }
+        public bool VotingDeadlinePickerIsEnabled { get => votingDeadlinePickerIsEnabled; set => votingDeadlinePickerIsEnabled = value; }
         public bool ProposingUsersSwitchIsEnabled { get => proposingUsersSwitchIsEnabled; set => proposingUsersSwitchIsEnabled = value; }
-        public bool ProposingUsersBlockIsIsVisible { get => proposingUsersBlockIsVisible; set => proposingUsersBlockIsVisible = value; }
+        public bool ProposingUsersSwitchIsToggled
+        {
+            get
+            {
+                return proposingUsersSwitchIsToggled;
+            }
+            set
+            {
+                proposingUsersSwitchIsToggled = value;
+                //RaisePropertyChanged("ProposingUsersSwitchIsToggled");
+            }
+        }
+
+        //public bool ProposingUsersBlockIsVisible { get => proposingUsersBlockIsVisible; set => proposingUsersBlockIsVisible = value; }
         public bool MaxPropositionsPerUserPickerIsEnabled { get => maxPropositionsPerUserPickerIsEnabled; set => maxPropositionsPerUserPickerIsEnabled = value; }
-        public bool ProposingDeadlineDatePickerIsEnabled { get => proposingDeadlineDatePickerIsEnabled; set => proposingDeadlineDatePickerIsEnabled = value; }
-        public bool ProposingDeadlineTimePickerIsEnabled { get => proposingDeadlineTimePickerIsEnabled; set => proposingDeadlineTimePickerIsEnabled = value; }
+        public bool ProposingDeadlinePickerIsEnabled { get => proposingDeadlinePickerIsEnabled; set => proposingDeadlinePickerIsEnabled = value; }
         public string TitleEntryText { get => titleEntryText; set => titleEntryText = value; }
         public string DescriptionEntryText { get => descriptionEntryText; set => descriptionEntryText = value; }
         public string UbicationEntryText { get => ubicationEntryText; set => ubicationEntryText = value; }
-        public string FieldPickerSelectedItem { get => fieldPickerSelectedItem; set => fieldPickerSelectedItem = value; }
+        public int FieldPickerSelectedIndex { get => fieldPickerSelectedIndex; set => fieldPickerSelectedIndex = value; }
         public DateTime VotingDeadlineDatePickerDate { get => votingDeadlineDatePickerDate; set => votingDeadlineDatePickerDate = value; }
         public TimeSpan VotingDeadlineTimePickerTime { get => votingDeadlineTimePickerTime; set => votingDeadlineTimePickerTime = value; }
         public int MaxPropositionsPerUserPickerSelectedItem { get => maxPropositionsPerUserPickerSelectedItem; set => maxPropositionsPerUserPickerSelectedItem = value; }
         public DateTime ProposingDeadlineDatePickerDate { get => proposingDeadlineDatePickerDate; set => proposingDeadlineDatePickerDate = value; }
         public TimeSpan ProposingDeadlineTimePickerTime { get => proposingDeadlineTimePickerTime; set => proposingDeadlineTimePickerTime = value; }
-
+        
     }
 }

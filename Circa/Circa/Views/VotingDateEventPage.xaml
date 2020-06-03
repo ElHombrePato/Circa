@@ -42,7 +42,7 @@
     </NavigationPage.TitleView>
 
     <!--
-    <control:CharacteristicsUserControl x:Name="CharacteristicsUC" Lol="Caca" />
+    <control:CharacteristicsUserControl x:Name="CharacteristicsUC" Lol="Hola" />
     -->
     
     <ContentPage Title="Características">
@@ -52,7 +52,8 @@
                 <Frame Style="{StaticResource FrameStyle}">
                     <Entry x:Name="TitleEntry"
                            Text="{Binding TitleEntryText}"
-                           Placeholder="Título"/>
+                           Placeholder="Título"
+                           IsEnabled="{Binding TitleEntryIsEnabled}"/>
                 </Frame>
 
                 <Frame Style="{StaticResource FrameStyle}">
@@ -74,18 +75,21 @@
                             <Entry x:Name="DescriptionEntry"
                                    Text="{Binding DescriptionEntryText}"
                                    Placeholder="Descripción"
+                                   IsEnabled="{Binding DescriptionEntryIsEnabled}"
                                    Grid.Row="0" Grid.Column="1"/>
 
                             <Image Source="{local:ImageResource Circa.Images.138-maps-and-flags-1.png}" Grid.Row="1" Grid.Column="0"/>
                             <Entry x:Name="UbicationEntry"
                                    Text="{Binding UbicationEntryText}"
                                    Placeholder="Ubicación"
+                                   IsEnabled="{Binding UbicationEntryIsEnabled}"
                                    Grid.Row="1" Grid.Column="1"/>
 
                             <Image Source="{local:ImageResource Circa.Images.089-steering.png}" Grid.Row="2" Grid.Column="0"/>
                             <Picker x:Name="FieldPicker"   
-                                    SelectedItem="{Binding FieldPickerSelectedItem}"
+                                    SelectedIndex="{Binding FieldPickerSelectedIndex}"
                                     Title="Ámbito"
+                                    IsEnabled="{Binding FieldPickerIsEnabled}"
                                     Grid.Row="2" Grid.Column="1" />
                             <!--
                             SelectedIndex="1"
@@ -110,9 +114,11 @@
                             <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
                             <DatePicker x:Name="VotingDeadlineDatePicker"
                                         Date="{Binding VotingDeadlineDatePickerDate}"
+                                        IsEnabled="{Binding VotingDeadlinePickerIsEnabled}"
                                         Grid.Column="1"/>
                             <TimePicker x:Name="VotingDeadlineTimePicker"
                                         Time="{Binding VotingDeadlineTimePickerTime}"
+                                        IsEnabled="{Binding VotingDeadlinePickerIsEnabled}"
                                         Grid.Column="2"/>
                         </Grid>
                     </StackLayout>
@@ -134,10 +140,14 @@
                                    Grid.Column="0"/>
                             <Switch x:Name="ProposingUsersSwitch"
                                     Toggled="ProposingUsersSwitch_Toggled"
+                                    IsToggled="{Binding ProposingUsersSwitchIsToggled}"
+                                    IsEnabled="{Binding ProposingUsersSwitchIsEnabled}"
                                     Grid.Column="1"/>
+                            <!--<Toggled="ProposingUsersSwitch_Toggled"-->
                         </Grid>
 
-                        <StackLayout x:Name="ProposingUsersBlock" IsVisible="False">
+                        <StackLayout x:Name="ProposingUsersBlock"
+                                     IsVisible="False">
                             <Grid x:Name="MaxPropositionsPerUserGrid">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -153,8 +163,9 @@
                                 <Label Text="Límite de aportaciones"
                                     Grid.Row="0" Grid.Column="1"/>
                                 <Picker x:Name="MaxPropositionsPerUserPicker"
-                                    SelectedItem="MaxPropositionsPerUserPickerSelectedItem"
+                                    SelectedItem="{Binding MaxPropositionsPerUserPickerSelectedItem}"
                                     Title="  3"
+                                    IsEnabled="{Binding MaxPropositionsPerUserPickerIsEnabled}"
                                     Grid.Row="0" Grid.Column="2"/>
                             </Grid>
 
@@ -175,9 +186,11 @@
                                        Grid.Column="0"/>
                                 <DatePicker x:Name="ProposingDeadlineDatePicker"
                                             Date="{Binding ProposingDeadlineDatePickerDate}"
+                                            IsEnabled="{Binding ProposingDeadlinePickerIsEnabled}"
                                             Grid.Column="1"/>
                                 <TimePicker x:Name="ProposingDeadlineTimePicker"
                                             Time="{Binding ProposingDeadlineTimePickerTime}"
+                                            IsEnabled="{Binding ProposingDeadlinePickerIsEnabled}"
                                             Grid.Column="2"/>
                             </Grid>
                         </StackLayout>

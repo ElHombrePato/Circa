@@ -28,28 +28,28 @@ namespace Circa
             };
 
             myUser.AddEvent(new DateEvent(
+                myUser,
                 "Mi evento",
                 "Descripción 1",
                 "Lugar 1",
-                "Familia",
-                myUser,
+                1,
                 DateTime.UtcNow,
                 myEventDateOptions));
 
             myUser.AddEvent(new DateEvent(
+                anaUser,
                 "Evento de Ana",
                 "Descripción 2",
                 "Lugar 2",
-                "Trabajo",
-                anaUser,
+                2,
                 DateTime.Now,
                 new List<DateOption>()));
             myUser.AddEvent(new DateEvent(
+                benitoUser,
                 "Evento de Benito",
                 "Descripción 3",
                 "Lugar 3",
-                "Amigos",
-                benitoUser,
+                3,
                 DateTime.Now,
                 new List<DateOption>()));
 

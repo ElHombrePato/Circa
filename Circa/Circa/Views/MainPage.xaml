@@ -177,7 +177,7 @@
                                         Grid.Row="0" Grid.Column="0"/>
                                     <Label Text="{Binding VotingDeadline}"
                                         Grid.Row="1" Grid.Column="0"/>
-                                    <Label Text="{Binding Field}"
+                                    <Label Text="{Binding FieldKey}"
                                         Grid.Row="1" Grid.Column="1"/>
                                 </Grid>
                             </ContentView>

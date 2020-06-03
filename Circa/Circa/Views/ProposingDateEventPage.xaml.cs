@@ -25,14 +25,16 @@ namespace Circa.Views
         //private static List<VotedDate> inCreationVotedDates = new List<VotedDate>();
         //private CalendarEventCollection CalendarInlineEvents { get; set; } = new CalendarEventCollection();
 
-        public ProposingDateEventPage() //Listenber como atributo!!!!!!!
+        public ProposingDateEventPage(MainPage listener) //TODO Listenber como atributo!!!!!!!
         {
             InitializeComponent();
 
-            this.BindingContext = new ProposingDateEventVM();
-
-            FieldPicker.ItemsSource = GenericEvent.eventFieldArray;
+            Listener = listener;
+            
+            FieldPicker.ItemsSource = GenericEvent.EVENT_FIELDS.Values.ToList<String>();
             MaxPropositionsPerUserPicker.ItemsSource = GenericEvent.maxPropositionsPerUserArray;
+
+            this.BindingContext = new ProposingDateEventVM();
 
             //inCreationVotedDates = new ObservableCollection<DateTime>(inCreationVotedDates.Distinct());
             //votedDatesListView.ItemsSource = inCreationVotedDates;
@@ -40,19 +42,20 @@ namespace Circa.Views
             //votedDatesListView.ItemsSource = CalendarInlineEvents;
         }
 
-        public ProposingDateEventPage(DateEvent dateEvent)
+        public ProposingDateEventPage(DateEvent dateEvent, MainPage listener)
         {
             InitializeComponent();
 
-            this.BindingContext = new ProposingDateEventVM();
+            Listener = listener;
 
-            FieldPicker.ItemsSource = DateEvent.eventFieldArray;
+            FieldPicker.ItemsSource = GenericEvent.EVENT_FIELDS.Values.ToList<String>();
+            MaxPropositionsPerUserPicker.ItemsSource = GenericEvent.maxPropositionsPerUserArray;
+
+            this.BindingContext = new ProposingDateEventVM(dateEvent);
 
             //LIDIAR CON LAS FECHAS
             //HACER DOS LISTAS, UNA PARA TI Y OTRA CON EL RESTO DE FECHAS (esta QUE SEAN DATEOPTION)
             //HACER MYEVENTS OBSERVABLE
-
-
         }
 
         private async void ConfirmNewEvent_Clicked(object sender, EventArgs e)
@@ -64,6 +67,8 @@ namespace Circa.Views
             {
                 Listener.OnNewUserEvent(vm.ConfirmProposingDateEvent());
             }
+
+
 
             await Navigation.PopModalAsync().ConfigureAwait(false);
         }
@@ -124,12 +129,19 @@ namespace Circa.Views
             */
         }
 
-        private void ProposingIsEnabledSwitch_Toggled(object sender, ToggledEventArgs e)
+        private void ProposingUsersSwitch_Toggled(object sender, ToggledEventArgs e)
         {
-            //MaxPropositionsPerUserGrid.IsVisible = !MaxPropositionsPerUserGrid.IsVisible;
-            //ProposingDeadlineLabel.IsVisible = !ProposingDeadlineLabel.IsVisible;
-            //ProposingDeadlineGrid.IsVisible = !ProposingDeadlineGrid.IsVisible;
+            var vm = BindingContext as ProposingDateEventVM;
 
+            System.Diagnostics.Debug.WriteLine("Value: " + vm.ProposingUsersSwitchIsToggled);
+            System.Diagnostics.Debug.WriteLine("Switch: " + ProposingUsersSwitch.IsToggled);
+            System.Diagnostics.Debug.WriteLine("Block: " + ProposingUsersBlock.IsVisible);
+
+            //TODO No funiona el cambio automatico por propiedad del vm.ProposingUsersSwitchIsToggled
+            //Volver a Voisible Block attribute?
+            //vm.ProposingUsersSwitchIsToggled = !vm.ProposingUsersSwitchIsToggled;
+            
+            //Si se quita esta propiedad funciona la carga, pero no New Event
             ProposingUsersBlock.IsVisible = !ProposingUsersBlock.IsVisible;
         }
 

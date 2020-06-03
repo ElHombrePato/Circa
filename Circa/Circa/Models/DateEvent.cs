@@ -22,14 +22,14 @@ namespace Circa.Models
             //Admin = admin;
         }
         
-        public DateEvent(string title, string description, string ubication, string field, AppUser admin, DateTime votingDeadline, List<DateOption> dateOptions)
-            :base(title, description, ubication, field, admin, votingDeadline)
+        public DateEvent(AppUser admin, string title, string description, string ubication, int fieldKey, DateTime votingDeadline, List<DateOption> dateOptions)
+            :base(admin, title, description, ubication, fieldKey, votingDeadline)
         {
             DateOptions = dateOptions;
         }
 
-        public DateEvent(string title, string description, string ubication, string field, AppUser admin, DateTime votingDeadline, bool proposingIsEnabled, int maxPropositionsPerUser, DateTime proposingDeadline, List<DateOption> dateOptions)
-            :base(title, description, ubication, field, admin, votingDeadline, proposingIsEnabled, maxPropositionsPerUser, proposingDeadline)
+        public DateEvent(AppUser admin, string title, string description, string ubication, int fieldKey, DateTime votingDeadline, bool proposingIsEnabled, int maxPropositionsPerUser, DateTime proposingDeadline, List<DateOption> dateOptions)
+            :base(admin, title, description, ubication, fieldKey, votingDeadline, proposingIsEnabled, maxPropositionsPerUser, proposingDeadline)
         {
             DateOptions = dateOptions;
         }
@@ -38,7 +38,7 @@ namespace Circa.Models
         {
             Title = genericEvent.Title;
             Description = genericEvent.Description;
-            Field = genericEvent.Field;
+            FieldKey = genericEvent.FieldKey;
             Admin = genericEvent.Admin;
             VotingDeadline = genericEvent.VotingDeadline;
             ProposingIsEnabled = genericEvent.ProposingIsEnabled;
