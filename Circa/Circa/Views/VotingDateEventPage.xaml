@@ -159,18 +159,18 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Image Source="{local:ImageResource Circa.Images.196-user.png}"
-                                    Grid.Row="0" Grid.Column="0"/>
+                                       Grid.Row="0" Grid.Column="0"/>
                                 <Label Text="Límite de aportaciones"
-                                    Grid.Row="0" Grid.Column="1"/>
+                                       Grid.Row="0" Grid.Column="1"/>
                                 <Picker x:Name="MaxPropositionsPerUserPicker"
-                                    SelectedItem="{Binding MaxPropositionsPerUserPickerSelectedItem}"
-                                    Title="  3"
-                                    IsEnabled="{Binding MaxPropositionsPerUserPickerIsEnabled}"
-                                    Grid.Row="0" Grid.Column="2"/>
+                                        SelectedItem="{Binding MaxPropositionsPerUserPickerSelectedItem}"
+                                        Title="  3"
+                                        IsEnabled="{Binding MaxPropositionsPerUserPickerIsEnabled}"
+                                        Grid.Row="0" Grid.Column="2"/>
                             </Grid>
 
                             <Label x:Name="ProposingDeadlineLabel"
-                                Text="Límite de tiempo para proponer:"/>
+                                   Text="Límite de tiempo para proponer:"/>
 
                             <Grid x:Name="ProposingDeadlineGrid">
                                 <Grid.RowDefinitions>
@@ -209,8 +209,14 @@
             </Grid.RowDefinitions>
 
             <Frame Style="{StaticResource CalendarFrame}">
-                <syncfusion:SfCalendar x:Name="Calendar"                                     
-                    SelectionMode="MultiSelection">
+                <!--Se puede poner color a las blackout dates-->
+                <syncfusion:SfCalendar x:Name="Calendar"
+                                       MinDate="{Binding CalendarMinDate}"
+                                       MaxDate="{Binding CalendarMaxDate}"
+                                       BlackoutDates="{Binding CalendarBlackoutDates}"
+                                       BlackoutDatesViewMode="Strikethrough"
+                                       SelectedDates="{Binding HHHHHHHHh, Mode=TwoWay}"
+                                       SelectionMode="MultiSelection">
                 </syncfusion:SfCalendar>
             </Frame>
 
@@ -218,10 +224,9 @@
                 <Frame Style="{StaticResource FrameStyle}">
 
                     <CollectionView x:Name="dateOptionsList"
-                                ItemsSource="{Binding DateOptions}"
-                                             
-                                
-                                SelectionMode="Multiple">
+                                    ItemsSource="{Binding DateOptions}"
+                                    IsEnabled="False"             
+                                    SelectionMode="Multiple">
                         <CollectionView.Header>
                             <StackLayout>
                                 <Label Text="Posibles fechas:"
@@ -242,12 +247,12 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Text="{Binding Path=.Date, StringFormat='{0:dd/M/yyyy}'}"       
-                                        Grid.Row="0" Grid.Column="0"/>
-                                        <Label Text="{Binding Proposer.Nickname}"
-                                        Grid.Row="1" Grid.Column="0"/>
-                                        <Label Text="Numero de votos"
-                                        Grid.Row="1" Grid.Column="1"/>
+                                        <Label Text="{Binding Path=Date, StringFormat='{0:dd/M/yyyy}'}"       
+                                               Grid.Row="0" Grid.Column="0"/>
+                                        <Label Text="{Binding ProposerNickname}"
+                                               Grid.Row="1" Grid.Column="0"/>
+                                        <Label Text="{Binding VoteCount}"
+                                               Grid.Row="1" Grid.Column="1"/>
                                     </Grid>
                                 </ContentView>
                             </DataTemplate>

@@ -36,21 +36,29 @@ namespace Circa.Models
 
         public DateEvent(GenericEvent genericEvent)
         {
-            Title = genericEvent.Title;
-            Description = genericEvent.Description;
-            FieldKey = genericEvent.FieldKey;
-            Admin = genericEvent.Admin;
-            VotingDeadline = genericEvent.VotingDeadline;
-            ProposingIsEnabled = genericEvent.ProposingIsEnabled;
-            MaxPropositionsPerUser = genericEvent.MaxPropositionsPerUser;
-            ProposingDeadline = genericEvent.ProposingDeadline;
+            if (genericEvent != null)
+            {
+                Title = genericEvent.Title;
+                Description = genericEvent.Description;
+                FieldKey = genericEvent.FieldKey;
+                Admin = genericEvent.Admin;
+                VotingDeadline = genericEvent.VotingDeadline;
+                ProposingIsEnabled = genericEvent.ProposingIsEnabled;
+                MaxPropositionsPerUser = genericEvent.MaxPropositionsPerUser;
+                ProposingDeadline = genericEvent.ProposingDeadline;
 
-            DateOptions = new List<DateOption>();
+                DateOptions = new List<DateOption>();
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Error en DateEvent");
+            }
+
         }
 
 
 
-        public static List<DateOption> createUserDatesList(List<DateTime> toBeAddedDates, AppUser proposer)
+        public static List<DateOption> CreateUserDatesList(List<DateTime> toBeAddedDates, AppUser proposer)
         {
             var votedDates = new List<DateOption>();
             

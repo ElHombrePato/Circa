@@ -9,9 +9,9 @@ namespace Circa.Models
         //private int id;
         private DateTime date = new DateTime();
         private AppUser proposer;
-        private List<OptionVote> votes;
+        private List<UserVote> votes;
 
-        public DateOption(DateTime date, AppUser proposer, List<OptionVote> votes)
+        public DateOption(DateTime date, AppUser proposer, List<UserVote> votes)
         {
             Date = date;
             Proposer = proposer;
@@ -22,14 +22,19 @@ namespace Circa.Models
         {
             Date = date;
             Proposer = proposer;
-            Votes = new List<OptionVote>();
+            Votes = new List<UserVote>();
         }
 
         public DateOption(DateTime date)
         {
             Date = date;
             Proposer = proposer;
-            Votes = new List<OptionVote>();
+            Votes = new List<UserVote>();
+        }
+
+        public int CountVotes()
+        {
+            return votes.Count;
         }
 
         public override string ToString()
@@ -69,6 +74,6 @@ namespace Circa.Models
         
         public DateTime Date { get => date; set => date = value; }
         public AppUser Proposer { get => proposer; set => proposer = value; }
-        internal List<OptionVote> Votes { get => votes; set => votes = value; }
+        internal List<UserVote> Votes { get => votes; set => votes = value; }
     }
 }

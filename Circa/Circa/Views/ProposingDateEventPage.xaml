@@ -220,9 +220,13 @@
 
             <Frame Style="{StaticResource CalendarFrame}">
 
-                <syncfusion:SfCalendar x:Name="Calendar"                                     
-                                       SelectionMode="MultiSelection"   
-                                       SelectedDates="{Binding MyDates, Mode=TwoWay}">
+                <syncfusion:SfCalendar x:Name="Calendar"
+                                       MinDate="{Binding CalendarMinDate}"
+                                       MaxDate="{Binding CalendarMaxDate}"
+                                       BlackoutDates="{Binding CalendarBlackoutDates}"
+                                       BlackoutDatesViewMode="Strikethrough" 
+                                       SelectedDates="{Binding MyDates, Mode=TwoWay}"
+                                       SelectionMode="MultiSelection">
                 </syncfusion:SfCalendar>
                 <!--Las fechas deben ser posteriores a la fecha de voto límite
                 Calendar-->
@@ -243,90 +247,7 @@
             
             <StackLayout Grid.Row="1">
                 <Frame Style="{StaticResource FrameStyle}">
-                    <!--
-                    <ListView x:Name="votedDatesListView"
-                                IsPullToRefreshEnabled="true"
-                                RefreshControlColor="Red" >
-                        <ListView.Header>
-                            <StackLayout>
-                                <Label Text="Fechas seleccionadas:" Style="{StaticResource SectionLabel}"/>
-                            </StackLayout>
-                        </ListView.Header>
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.ContextActions>
-                                        <MenuItem Clicked="OnMore"
-                                            CommandParameter="{Binding .}"
-                                            Text="More" />
-                                        <MenuItem Clicked="OnDelete"
-                                                CommandParameter="{Binding .}"
-                                                Text="Delete" IsDestructive="True" />
-                                            
-                                    </ViewCell.ContextActions>
-                                        
-                                        
-                                    <Grid VerticalOptions="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Label Text="{Binding Date, StringFormat='Date: {0:dd/M/yyyy}'}"
-                                        Grid.Column="0"/>
-                                        <Label Text="{Binding Proposer}"
-                                        Grid.Column="1"/>
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    -->
-                    <!--
-                    <ListView ItemsSource="{Binding DateOptions}"  
-                                SelectedItem="Single">
-                        <ListView.Header>
-                            <StackLayout>
-                                <Label Text="Fechas seleccionadas:" Style="{StaticResource SectionLabel}"/>
-                            </StackLayout>
-                        </ListView.Header>
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.ContextActions>
-                                    </ViewCell.ContextActions>
-
-                                    <Grid VerticalOptions="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Label Text="{Binding Date, StringFormat='Date: {0:dd/M/yyyy}'}"
-                                        Grid.Column="0"/>
-                                        <Label Text="{Binding Proposer.Nickname}"
-                                        Grid.Column="1"/>
-                                        <ImageButton
-                                                Source="{local:ImageResource Circa.Images.122-cancel.png}"
-                                                Clicked="RemoveDateOption_Clicked"
-                                                Grid.Column="2" />
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
-                    -->
-
+                    
                     <ListView x:Name="myDateList"
                                 ItemsSource="{Binding MyDates, Mode=OneWay}"
                                 SelectionMode="None">

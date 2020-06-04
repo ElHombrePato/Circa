@@ -23,6 +23,7 @@ namespace Circa
 
             var myEventDateOptions = new List<DateOption>()
             {
+                new DateOption(new DateTime(2020, 10, 25), anaUser),
                 new DateOption(new DateTime(2020, 10, 12), anaUser),
                 new DateOption(new DateTime(2020, 10, 16), myUser)
             };

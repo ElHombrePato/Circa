@@ -38,7 +38,6 @@ namespace Circa.Views
             }
             */
 
-
             var vm = BindingContext as VotingDateEventVM;
 
             //Mandamos el evento al MainPage para que lo guarde en la BD y lo muestre

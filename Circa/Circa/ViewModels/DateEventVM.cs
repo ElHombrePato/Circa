@@ -13,31 +13,34 @@ namespace Circa.ViewModels
     {
         private DateEvent dateEvent;
 
+        private DateTime calendarMinDate;
+        private DateTime calendarMaxDate;
+        private List<DateTime> calendarBlackoutDates;
+
         //private ObservableCollection<DateOption> dateOptions;
 
         //Used if it is a new Date event
         public DateEventVM() : base()
         {
-            //ES INNECESARIO DATEEVENT?
             DateEvent = new DateEvent(App.myUser);
             //DateOptions = new ObservableCollection<DateOption>();
+
+            CalendarMinDate = DateTime.UtcNow;
+            calendarMaxDate = DateTime.MaxValue;
+            CalendarBlackoutDates = new List<DateTime>();
+
         }
 
         //When Proposing/Voting
         public DateEventVM(DateEvent dateEvent) : base(dateEvent)
         {
-            GenericEvent = dateEvent;
+            //GenericEvent = (GenericEvent)dateEvent;
             DateEvent = dateEvent;
-            
-            /*
-            DateOptions = new ObservableCollection<DateOption>(DateEvent.DateOptions);
 
-
-            foreach (DateOption i in DateOptions)
-            {
-                System.Diagnostics.Debug.WriteLine("DateOpt en VotingVM: " + i);
-            }
-            */
+            //TODO check values
+            CalendarMinDate = DateTime.UtcNow;
+            CalendarMaxDate = DateTime.MaxValue;
+            CalendarBlackoutDates = new List<DateTime>();
         }
 
         public DateEvent ConfirmDateEvent(List<DateOption> dateOptions)
@@ -45,17 +48,14 @@ namespace Circa.ViewModels
             ConfirmGenericEvent();
 
             //This is not the DateEvent attribute
-            var dateEvent = new DateEvent(GenericEvent);
-
-            dateEvent.DateOptions = dateOptions;
+            var dateEvent = new DateEvent(GenericEvent)
+            {
+                DateOptions = dateOptions
+            };
 
             return dateEvent;
 
         }
-
-
-
-
 
         /*
         public Command<DateTime> RemoveCommand
@@ -73,9 +73,6 @@ namespace Circa.ViewModels
         }
         */
 
-        public DateEvent DateEvent { get => dateEvent; set => dateEvent = value; }
-        //public ObservableCollection<DateOption> DateOptions { get => dateOptions; set => dateOptions = value; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(String Name)
@@ -85,20 +82,17 @@ namespace Circa.ViewModels
                 //MyDates.Sort();
                 this.PropertyChanged(this, new PropertyChangedEventArgs(Name));
             }
-                
+
         }
 
-        /*
-        public void printDate(String str)
-        {
-            int i = 0;
-            System.Diagnostics.Debug.WriteLine(str + ":");
-            foreach (DateTime dT in MyDates)
-            {
-                i++;
-                System.Diagnostics.Debug.WriteLine("" + i + ") " + dT);
-            }
-        }
-        */
+
+        public DateEvent DateEvent { get => dateEvent; set => dateEvent = value; }
+        public DateTime CalendarMinDate { get => calendarMinDate; set => calendarMinDate = value; }
+        public DateTime CalendarMaxDate { get => calendarMaxDate; set => calendarMaxDate = value; }
+        public List<DateTime> CalendarBlackoutDates { get => calendarBlackoutDates; set => calendarBlackoutDates = value; }
+
+        //public ObservableCollection<DateOption> DateOptions { get => dateOptions; set => dateOptions = value; }
+
     }
 }
+

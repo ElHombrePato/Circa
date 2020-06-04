@@ -138,7 +138,7 @@ namespace Circa.ViewModels
                 proposingDeadline = proposingDeadline.Add(ProposingDeadlineTimePickerTime);
 
                 var fieldIndex = 404;
-                if (FieldPickerSelectedIndex != null)
+                if (FieldPickerSelectedIndex != -1)
                 {
                     fieldIndex = FieldPickerSelectedIndex;
                 }

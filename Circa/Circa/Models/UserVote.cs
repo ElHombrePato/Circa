@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Circa.Models
 {
-    public class OptionVote
+    public class UserVote
     {
 
         public static readonly string[] optionVoteCodes = new string[]
@@ -17,7 +17,7 @@ namespace Circa.Models
         private AppUser voter;
         private int optionCode;
 
-        public OptionVote(AppUser voter, int optionCode)
+        public UserVote(AppUser voter, int optionCode)
         {
             Voter = voter;
             OptionCode = optionCode;

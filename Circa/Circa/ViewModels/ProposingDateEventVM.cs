@@ -13,73 +13,118 @@ namespace Circa.ViewModels
     public class ProposingDateEventVM : DateEventVM, INotifyPropertyChanged
     {
         private List<DateTime> myDates;
-        private List<DateOption> otherDateOptions;
-
+        private ObservableCollection<DateOptionWrapper> otherDateOptions;
 
         //New event
         public ProposingDateEventVM() : base()
         {
-            //Generic Event?
-            //DateEvent = new DateEvent(App.myUser);
             MyDates = new List<DateTime>();
+            OtherDateOptions = new ObservableCollection<DateOptionWrapper>();
         }
         
         public ProposingDateEventVM(DateEvent dateEvent) : base(dateEvent)
         {
             MyDates = new List<DateTime>();
-            OtherDateOptions = new List<DateOption>();
+            
+            LoadListValues();
 
-            DevideDateOptionsList();
+            if (DateEvent.ProposingIsEnabled)
+            {
+                CalendarMinDate = DateEvent.ProposingDeadline;
+            }
         }
 
-        public void DevideDateOptionsList()
+        //public void DevideDateOptionsList()
+        private void LoadListValues()
         {
-            var dateOptions = DateEvent.DateOptions;
+            var otherDateOptionsWrapper = new List<DateOptionWrapper>();
+            var otherDates = new List<DateTime>();
 
-            if (dateOptions != null)
+            if (DateEvent.DateOptions != null && DateEvent.DateOptions.Count != 0)
             {
-                //Se cogen las fechas de los eventos propuestos por myUser
-                foreach (DateOption dO in dateOptions)
+                foreach (DateOption dE in DateEvent.DateOptions)
                 {
-                    if (dO.Proposer.Equals(App.myUser))
+                    if (dE.Proposer.Equals(App.myUser))
                     {
-                        MyDates.Add(dO.Date);
-                        dateOptions.Remove(dO);
+                        MyDates.Add(dE.Date);
+                    }
+                    else
+                    {
+                        otherDateOptionsWrapper.Add(new DateOptionWrapper(dE));
+                        otherDates.Add(dE.Date);
                     }
                 }
-                //Se introducen las fechas del resto de usuarios
-                OtherDateOptions = dateOptions;
-            }
 
+                //It works with CompareTo(DateOptionWrapper)
+                otherDateOptionsWrapper.Sort();
+                
+                MyDates.Sort();
+                OtherDateOptions = new ObservableCollection<DateOptionWrapper>(otherDateOptionsWrapper);
+                CalendarBlackoutDates = otherDates;
+            }
         }
 
         public void JoinDateOptionsList()
         {
             var myDateOptions = DatesToDateOptions(MyDates);
 
-            DateEvent.DateOptions = OtherDateOptions.Concat(myDateOptions) as List<DateOption>;
+
+            //DateEvent.DateOptions = OtherDateOptions.Concat(myDateOptions) as List<Models.DateOption>;
+        }
+
+        
+
+        //SOLO FUNCIONA PARA EVENTOS SIN PROPOSING
+        public DateEvent ConfirmProposingDateEvent()
+        {
+            var dateOptionsAux = DatesToDateOptions(MyDates);
+
+            if(DateEvent.DateOptions != null && DateEvent.DateOptions.Count != 0)
+            {
+                var otherDateOptionsAux = DateEvent.DateOptions;
+                otherDateOptionsAux.RemoveAll(item => item.Proposer == App.myUser);
+
+                dateOptionsAux = dateOptionsAux.Concat<DateOption>(otherDateOptionsAux).ToList();
+            }
+
+            var dateEvent = ConfirmDateEvent(dateOptionsAux);
+
+            return dateEvent;
+
+            /*
+            if(DateEvent.DateOptions != null && DateEvent.DateOptions.Count != 0)
+            {
+                var dateOptionsAux = DateEvent.DateOptions;
+
+                foreach (DateOption dE in dateOptionsAux)
+                {
+                    if (dE.Proposer.Equals(App.myUser))
+                    {
+                        dateOptionsAux.Rem
+                    }
+                }
+
+                //It works with CompareTo(DateOptionWrapper)
+                otherDateOptionsWrapper.Sort();
+            */
         }
 
         public static List<DateOption> DatesToDateOptions(List<DateTime> dates)
         {
             var dateOptions = new List<DateOption>();
 
-            foreach (DateTime dT in dates)
+            if(dates != null && dates.Count != 0)
             {
-                dateOptions.Add(new DateOption(dT, App.myUser));
+                //dates.Sort();
+
+                foreach (DateTime dT in dates)
+                {
+                    dateOptions.Add(new DateOption(dT, App.myUser));
+                }
             }
 
             return dateOptions;
         }
-
-        //SOLO FUNCIONA PARA EVENTOS SIN PROPOSING
-        public DateEvent ConfirmProposingDateEvent()
-        {
-            var dateEvent = ConfirmDateEvent(DatesToDateOptions(MyDates));
-
-            return dateEvent;
-        }
-
 
         /*
         public void DateOptionsToDates(List<DateOption> dateOptions)
@@ -125,7 +170,9 @@ namespace Circa.ViewModels
             }
         }
 
-        public List<DateOption> OtherDateOptions
+        //public List<DateTime> OtherDates { get => otherDates; set => otherDates = value; }
+
+        public ObservableCollection<DateOptionWrapper> OtherDateOptions
         {
             get { return otherDateOptions; }
             set
@@ -135,7 +182,6 @@ namespace Circa.ViewModels
             }
                 
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -149,7 +195,7 @@ namespace Circa.ViewModels
                 
         }
 
-        public void printDate(String str)
+        public void PrintDate(String str)
         {
             int i = 0;
             System.Diagnostics.Debug.WriteLine(str + ":");
