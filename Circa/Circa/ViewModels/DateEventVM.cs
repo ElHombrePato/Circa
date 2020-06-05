@@ -25,8 +25,8 @@ namespace Circa.ViewModels
             DateEvent = new DateEvent(App.myUser);
             //DateOptions = new ObservableCollection<DateOption>();
 
-            CalendarMinDate = DateTime.UtcNow;
-            calendarMaxDate = DateTime.MaxValue;
+            CalendarMinDate = DateEvent.VotingDeadline;
+            CalendarMaxDate = DateTime.MaxValue;
             CalendarBlackoutDates = new List<DateTime>();
 
         }
@@ -38,7 +38,7 @@ namespace Circa.ViewModels
             DateEvent = dateEvent;
 
             //TODO check values
-            CalendarMinDate = DateTime.UtcNow;
+            CalendarMinDate = DateEvent.VotingDeadline;
             CalendarMaxDate = DateTime.MaxValue;
             CalendarBlackoutDates = new List<DateTime>();
         }
@@ -73,6 +73,7 @@ namespace Circa.ViewModels
         }
         */
 
+        /*
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(String Name)
@@ -84,10 +85,48 @@ namespace Circa.ViewModels
             }
 
         }
+        */
 
+        public override DateTime VotingDeadlineDatePickerDate
+        {
+            get { return base.VotingDeadlineDatePickerDate; }
+            set
+            {
+                base.VotingDeadlineDatePickerDate = value;
+                RaisePropertyChanged();
+
+                var votingDeadline = VotingDeadlineDatePickerDate;
+                votingDeadline = votingDeadline.Add(VotingDeadlineTimePickerTime);
+                CalendarMinDate = votingDeadline;
+            }
+        }
+
+
+        public override TimeSpan VotingDeadlineTimePickerTime
+        {
+            get { return base.VotingDeadlineTimePickerTime; }
+            set
+            {
+                base.VotingDeadlineTimePickerTime = value;
+                RaisePropertyChanged();
+
+                var votingDeadline = VotingDeadlineDatePickerDate;
+                votingDeadline = votingDeadline.Add(VotingDeadlineTimePickerTime);
+                CalendarMinDate = votingDeadline;
+            }
+        }
 
         public DateEvent DateEvent { get => dateEvent; set => dateEvent = value; }
-        public DateTime CalendarMinDate { get => calendarMinDate; set => calendarMinDate = value; }
+        public DateTime CalendarMinDate
+        {
+            get{ return calendarMinDate; }
+            set
+            {
+                calendarMinDate = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public DateTime CalendarMaxDate { get => calendarMaxDate; set => calendarMaxDate = value; }
         public List<DateTime> CalendarBlackoutDates { get => calendarBlackoutDates; set => calendarBlackoutDates = value; }
 

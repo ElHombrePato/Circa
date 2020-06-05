@@ -27,11 +27,12 @@ namespace Circa.ViewModels
             MyDates = new List<DateTime>();
             
             LoadListValues();
-
+            /*
             if (DateEvent.ProposingIsEnabled)
             {
                 CalendarMinDate = DateEvent.ProposingDeadline;
             }
+            */
         }
 
         //public void DevideDateOptionsList()
@@ -165,8 +166,9 @@ namespace Circa.ViewModels
             get { return myDates; }
             set
             {
+                value.Sort();
                 myDates = value;
-                RaisePropertyChanged("MyDates");
+                RaisePropertyChanged();
             }
         }
 
@@ -179,18 +181,6 @@ namespace Circa.ViewModels
             {
                 otherDateOptions = value;
                 RaisePropertyChanged("OtherDateOptions");
-            }
-                
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(String Name)
-        {
-            if (PropertyChanged != null)
-            {
-                MyDates.Sort();
-                this.PropertyChanged(this, new PropertyChangedEventArgs(Name));
             }
                 
         }

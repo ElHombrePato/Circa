@@ -129,21 +129,6 @@ namespace Circa.Views
             */
         }
 
-        private void ProposingUsersSwitch_Toggled(object sender, ToggledEventArgs e)
-        {
-            var vm = BindingContext as ProposingDateEventVM;
-
-            System.Diagnostics.Debug.WriteLine("Value: " + vm.ProposingUsersSwitchIsToggled);
-            System.Diagnostics.Debug.WriteLine("Switch: " + ProposingUsersSwitch.IsToggled);
-            System.Diagnostics.Debug.WriteLine("Block: " + ProposingUsersBlock.IsVisible);
-
-            //TODO No funiona el cambio automatico por propiedad del vm.ProposingUsersSwitchIsToggled
-            //Volver a Voisible Block attribute?
-            //vm.ProposingUsersSwitchIsToggled = !vm.ProposingUsersSwitchIsToggled;
-            
-            //Si se quita esta propiedad funciona la carga, pero no New Event
-            ProposingUsersBlock.IsVisible = !ProposingUsersBlock.IsVisible;
-        }
 
         /*
         private void RemoveDate_Clicked(object sender, EventArgs e)

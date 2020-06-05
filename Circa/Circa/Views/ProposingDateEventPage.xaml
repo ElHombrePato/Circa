@@ -124,11 +124,11 @@
 
                             <Image Source="{local:ImageResource Circa.Images.118-number-1.png}" Grid.Column="0"/>
                             <DatePicker x:Name="VotingDeadlineDatePicker"
-                                        Date="{Binding VotingDeadlineDatePickerDate}"
+                                        Date="{Binding VotingDeadlineDatePickerDate, Mode=TwoWay}"
                                         IsEnabled="{Binding VotingDeadlinePickerIsEnabled}"
                                         Grid.Column="1"/>
                             <TimePicker x:Name="VotingDeadlineTimePicker"
-                                        Time="{Binding VotingDeadlineTimePickerTime}"
+                                        Time="{Binding VotingDeadlineTimePickerTime, Mode=TwoWay}"
                                         IsEnabled="{Binding VotingDeadlinePickerIsEnabled}"
                                         Grid.Column="2"/>
                         </Grid>
@@ -150,14 +150,13 @@
                                    Style="{StaticResource SectionLabel}"
                                    Grid.Column="0"/>
                             <Switch x:Name="ProposingUsersSwitch"
-                                    Toggled="ProposingUsersSwitch_Toggled"
-                                    IsToggled="{Binding ProposingUsersSwitchIsToggled}"
+                                    IsToggled="{Binding ProposingUsersSwitchIsToggled, Mode=TwoWay}"
                                     IsEnabled="{Binding ProposingUsersSwitchIsEnabled}"
                                     Grid.Column="1"/>
                         </Grid>
 
                         <StackLayout x:Name="ProposingUsersBlock"
-                                     IsVisible="False">
+                                     IsVisible="{Binding ProposingUsersSwitchIsToggled, Mode=OneWay}">
                             <Grid x:Name="MaxPropositionsPerUserGrid">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -221,7 +220,7 @@
             <Frame Style="{StaticResource CalendarFrame}">
 
                 <syncfusion:SfCalendar x:Name="Calendar"
-                                       MinDate="{Binding CalendarMinDate}"
+                                       MinDate="{Binding CalendarMinDate, Mode=OneWay}"
                                        MaxDate="{Binding CalendarMaxDate}"
                                        BlackoutDates="{Binding CalendarBlackoutDates}"
                                        BlackoutDatesViewMode="Strikethrough" 

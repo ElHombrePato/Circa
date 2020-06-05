@@ -3,6 +3,7 @@ using Circa.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Circa.ViewModels
@@ -38,17 +39,12 @@ namespace Circa.ViewModels
         private TimeSpan proposingDeadlineTimePickerTime;
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(String Name)
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(Name));
-            }
-
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
 
         //Not used directly, but it is neccesary to implement inheritance in New events
@@ -184,14 +180,11 @@ namespace Circa.ViewModels
         public bool ProposingUsersSwitchIsEnabled { get => proposingUsersSwitchIsEnabled; set => proposingUsersSwitchIsEnabled = value; }
         public bool ProposingUsersSwitchIsToggled
         {
-            get
-            {
-                return proposingUsersSwitchIsToggled;
-            }
+            get{ return proposingUsersSwitchIsToggled; }
             set
             {
                 proposingUsersSwitchIsToggled = value;
-                //RaisePropertyChanged("ProposingUsersSwitchIsToggled");
+                RaisePropertyChanged();
             }
         }
 
@@ -202,8 +195,8 @@ namespace Circa.ViewModels
         public string DescriptionEntryText { get => descriptionEntryText; set => descriptionEntryText = value; }
         public string UbicationEntryText { get => ubicationEntryText; set => ubicationEntryText = value; }
         public int FieldPickerSelectedIndex { get => fieldPickerSelectedIndex; set => fieldPickerSelectedIndex = value; }
-        public DateTime VotingDeadlineDatePickerDate { get => votingDeadlineDatePickerDate; set => votingDeadlineDatePickerDate = value; }
-        public TimeSpan VotingDeadlineTimePickerTime { get => votingDeadlineTimePickerTime; set => votingDeadlineTimePickerTime = value; }
+        public virtual DateTime VotingDeadlineDatePickerDate { get => votingDeadlineDatePickerDate; set => votingDeadlineDatePickerDate = value; }
+        public virtual TimeSpan VotingDeadlineTimePickerTime { get => votingDeadlineTimePickerTime; set => votingDeadlineTimePickerTime = value; }
         public int MaxPropositionsPerUserPickerSelectedItem { get => maxPropositionsPerUserPickerSelectedItem; set => maxPropositionsPerUserPickerSelectedItem = value; }
         public DateTime ProposingDeadlineDatePickerDate { get => proposingDeadlineDatePickerDate; set => proposingDeadlineDatePickerDate = value; }
         public TimeSpan ProposingDeadlineTimePickerTime { get => proposingDeadlineTimePickerTime; set => proposingDeadlineTimePickerTime = value; }
